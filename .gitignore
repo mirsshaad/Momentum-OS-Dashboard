@@ -1,0 +1,6 @@
+# Node / Editor files
+node_modules/
+.DS_Store
+*.log
+.vscode/
+.idea/

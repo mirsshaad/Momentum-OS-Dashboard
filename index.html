@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momentum OS — Premium Personal Operating System</title>
+    <meta name="description" content="Apple, Notion & Linear inspired personal operating system with distinct Dashboard, Transformation, and Gym OS modules.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Ambient Gold Radial Glows -->
+    <div class="ambient-glow glow-top-left"></div>
+    <div class="ambient-glow glow-top-right"></div>
+    <div class="ambient-glow glow-bottom-center"></div>
+
+    <div class="app-container">
+        <!-- TOP HEADER BAR -->
+        <header class="top-header glass-card">
+            <div class="brand-section">
+                <div class="brand-logo-ring">
+                    <span class="logo-dot"></span>
+                </div>
+                <div class="brand-info">
+                    <h1 class="brand-title">MOMENTUM<span class="gold-text">OS</span></h1>
+                    <span class="brand-tag">v2.4 PRO EDITION</span>
+                </div>
+            </div>
+
+            <!-- PROMINENT VIEW NAVIGATION TABS -->
+            <nav class="view-nav-tabs">
+                <button class="nav-tab active" data-view="dashboard">
+                    <i data-lucide="layout-dashboard"></i> Daily Dashboard
+                </button>
+                <button class="nav-tab" data-view="transformation">
+                    <i data-lucide="sparkles"></i> Physical Glow-Up
+                </button>
+                <button class="nav-tab" data-view="gym">
+                    <i data-lucide="dumbbell"></i> Gym OS
+                </button>
+            </nav>
+
+            <div class="header-center">
+                <div class="live-clock-badge">
+                    <i data-lucide="clock" class="clock-icon"></i>
+                    <span id="live-time">00:00:00 AM</span>
+                    <span class="clock-divider">|</span>
+                    <span id="live-date">Friday, Jul 31</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <button class="icon-btn" id="sound-toggle-btn" title="Toggle Audio Feedback" aria-label="Toggle Sound">
+                    <i data-lucide="volume-2" id="sound-icon"></i>
+                </button>
+                <button class="icon-btn" id="reset-data-btn" title="Reset/Seed Sample Data" aria-label="Reset Data">
+                    <i data-lucide="rotate-ccw"></i>
+                </button>
+                <div class="user-avatar-pill">
+                    <div class="avatar-img">A</div>
+                    <span class="user-status-dot"></span>
+                </div>
+            </div>
+        </header>
+
+        <!-- VIEW 1: DAILY DASHBOARD (HABITS & PROTOCOL) -->
+        <div id="dashboard-view" class="view-pane active">
+            <!-- View Distinct Sub-Header Banner -->
+            <div class="view-banner banner-dashboard glass-card">
+                <div class="banner-title-box">
+                    <i data-lucide="layout-dashboard" class="gold-text"></i>
+                    <div>
+                        <h2>Daily Operating Dashboard</h2>
+                        <p>Track core habits, vitals, daily tasks, and schedule focus.</p>
+                    </div>
+                </div>
+                <span class="banner-tag gold-badge">Daily Protocol Active</span>
+            </div>
+
+            <main class="dashboard-grid">
+
+                <!-- 1. HERO SECTION -->
+                <section class="hero-section glass-card full-width">
+                    <div class="hero-content">
+                        <div class="hero-left">
+                            <div class="greeting-badge">
+                                <span class="pulse-dot"></span>
+                                <span id="time-greeting">Good Morning, Commander</span>
+                            </div>
+                            <h2 class="hero-title">Level <span id="user-level-num" class="gold-gradient-text">14</span> Architect</h2>
+                            <p class="hero-subtitle">Optimize daily inputs. Maintain relentless discipline. Elevate your potential.</p>
+                            
+                            <!-- XP Level Progress Bar -->
+                            <div class="xp-container">
+                                <div class="xp-header">
+                                    <span class="xp-label"><i data-lucide="zap" class="gold-icon"></i> Rank Progress (XP)</span>
+                                    <span class="xp-value" id="xp-text">7,450 / 10,000 XP</span>
+                                </div>
+                                <div class="xp-bar-track">
+                                    <div class="xp-bar-fill" id="xp-fill" style="width: 74.5%;"></div>
+                                </div>
+                            </div>
+
+                            <!-- Current Mission -->
+                            <div class="mission-card">
+                                <div class="mission-header">
+                                    <span class="mission-tag"><i data-lucide="target"></i> CURRENT MISSION</span>
+                                    <button class="btn-ghost-sm" id="edit-mission-btn"><i data-lucide="edit-3"></i> Edit</button>
+                                </div>
+                                <p class="mission-text" id="mission-display">Master AWS Architecture & Build High-Performance Distributed Systems</p>
+                            </div>
+                        </div>
+
+                        <div class="hero-right">
+                            <!-- Life Score Radial Gauge -->
+                            <div class="life-score-card">
+                                <div class="score-ring-container">
+                                    <svg class="score-svg" viewBox="0 0 160 160">
+                                        <circle class="score-bg" cx="80" cy="80" r="70"></circle>
+                                        <circle class="score-fill" id="score-ring-fill" cx="80" cy="80" r="70"></circle>
+                                    </svg>
+                                    <div class="score-inner">
+                                        <span class="score-val" id="life-score-val">92</span>
+                                        <span class="score-label">LIFE SCORE</span>
+                                    </div>
+                                </div>
+                                <div class="score-meta">
+                                    <span class="score-status"><i data-lucide="trending-up" class="gold-text"></i> Peak Performance</span>
+                                </div>
+                            </div>
+
+                            <!-- Streak Pill -->
+                            <div class="streak-card">
+                                <div class="streak-icon-box">
+                                    <i data-lucide="flame" class="flame-icon"></i>
+                                </div>
+                                <div class="streak-info">
+                                    <span class="streak-count" id="streak-count-val">28 Days</span>
+                                    <span class="streak-label">Active Streak 🔥</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily Quote Ribbon -->
+                    <div class="quote-ribbon">
+                        <i data-lucide="quote" class="quote-icon"></i>
+                        <p class="quote-text" id="quote-text">"We are what we repeatedly do. Excellence, then, is not an act, but a habit."</p>
+                        <span class="quote-author" id="quote-author">— Aristotle</span>
+                        <button class="quote-refresh-btn" id="refresh-quote-btn" title="New Quote"><i data-lucide="refresh-cw"></i></button>
+                    </div>
+                </section>
+
+                <!-- 2. PROGRESS RINGS SECTION -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="activity" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Core Daily Vitals</h3>
+                        </div>
+                        <span class="section-badge">6 Target Metrics</span>
+                    </div>
+
+                    <div class="rings-grid">
+                        <div class="ring-card glass-card" data-metric="workout">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-workout" id="ring-workout" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="dumbbell" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">Workout</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-workout">45</span> <span class="ring-unit">/ 60 min</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="workout">-</button>
+                                <button class="ring-btn increment" data-target="workout">+</button>
+                            </div>
+                        </div>
+
+                        <div class="ring-card glass-card" data-metric="protein">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-protein" id="ring-protein" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="beef" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">Protein</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-protein">165</span> <span class="ring-unit">/ 180 g</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="protein">-</button>
+                                <button class="ring-btn increment" data-target="protein">+</button>
+                            </div>
+                        </div>
+
+                        <div class="ring-card glass-card" data-metric="water">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-water" id="ring-water" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="droplet" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">Water Intake</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-water">3.2</span> <span class="ring-unit">/ 4.0 L</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="water">-</button>
+                                <button class="ring-btn increment" data-target="water">+</button>
+                            </div>
+                        </div>
+
+                        <div class="ring-card glass-card" data-metric="sleep">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-sleep" id="ring-sleep" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="moon" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">Sleep</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-sleep">7.5</span> <span class="ring-unit">/ 8.0 hrs</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="sleep">-</button>
+                                <button class="ring-btn increment" data-target="sleep">+</button>
+                            </div>
+                        </div>
+
+                        <div class="ring-card glass-card" data-metric="study">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-study" id="ring-study" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="book-open" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">AWS Study</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-study">2.0</span> <span class="ring-unit">/ 2.5 hrs</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="study">-</button>
+                                <button class="ring-btn increment" data-target="study">+</button>
+                            </div>
+                        </div>
+
+                        <div class="ring-card glass-card" data-metric="productivity">
+                            <div class="ring-svg-wrap">
+                                <svg class="ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="48"></circle>
+                                    <circle class="ring-fill ring-productivity" id="ring-productivity" cx="60" cy="60" r="48"></circle>
+                                </svg>
+                                <div class="ring-center"><i data-lucide="cpu" class="ring-icon"></i></div>
+                            </div>
+                            <div class="ring-info">
+                                <h4 class="ring-title">Productivity</h4>
+                                <div class="ring-stats"><span class="ring-current" id="val-productivity">7.5</span> <span class="ring-unit">/ 8.0 hrs</span></div>
+                            </div>
+                            <div class="ring-controls">
+                                <button class="ring-btn decrement" data-target="productivity">-</button>
+                                <button class="ring-btn increment" data-target="productivity">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. MAIN SPLIT GRID: CHECKLIST & SCHEDULE -->
+                <div class="split-grid-container full-width">
+                    <section class="checklist-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="check-square" class="gold-text"></i>
+                                <h3>Today's Protocol Checklist</h3>
+                            </div>
+                            <div class="checklist-meta">
+                                <span class="completion-pill" id="checklist-progress-text">7/9 Completed</span>
+                            </div>
+                        </div>
+
+                        <form id="add-task-form" class="add-task-row">
+                            <input type="text" id="task-input" placeholder="Add custom daily protocol item..." required>
+                            <button type="submit" class="btn-gold"><i data-lucide="plus"></i> Add</button>
+                        </form>
+
+                        <div class="filter-tabs">
+                            <button class="filter-btn active" data-filter="all">All Items</button>
+                            <button class="filter-btn" data-filter="pending">Pending</button>
+                            <button class="filter-btn" data-filter="completed">Completed</button>
+                        </div>
+
+                        <ul class="checklist-ul" id="checklist-container"></ul>
+                    </section>
+
+                    <section class="schedule-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="calendar" class="gold-text"></i>
+                                <h3>Schedule & Time Blocks</h3>
+                            </div>
+                            <span class="live-time-pill"><span class="live-dot"></span> Realtime</span>
+                        </div>
+
+                        <div class="timeline-container" id="timeline-container"></div>
+                    </section>
+                </div>
+
+                <!-- 4. QUICK STATS CARDS GRID -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="layout-grid" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Quick Stats & Metrics</h3>
+                        </div>
+                        <button class="btn-ghost-sm" id="open-edit-stats-modal"><i data-lucide="sliders"></i> Adjust Metrics</button>
+                    </div>
+
+                    <div class="quick-stats-grid">
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="scale"></i></span>
+                                <span class="stat-badge positive">-0.4 kg</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Body Weight</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-weight">78.5</span>
+                                    <span class="stat-unit">kg</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Target: 77.0 kg</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="flame"></i></span>
+                                <span class="stat-badge neutral">87.5%</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Daily Calories</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-calories">2,450</span>
+                                    <span class="stat-unit">/ 2,800 kcal</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><div class="mini-bar-track"><div class="mini-bar-fill" id="stat-bar-calories" style="width: 87.5%;"></div></div></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="utensils"></i></span>
+                                <span class="stat-badge positive">91.6%</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Protein Intake</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-protein">165</span>
+                                    <span class="stat-unit">/ 180 g</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><div class="mini-bar-track"><div class="mini-bar-fill" id="stat-bar-protein" style="width: 91.6%;"></div></div></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="glass-water"></i></span>
+                                <span class="stat-badge positive">80.0%</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Hydration</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-water">3.2</span>
+                                    <span class="stat-unit">/ 4.0 L</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><div class="mini-bar-track"><div class="mini-bar-fill" id="stat-bar-water" style="width: 80%;"></div></div></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="moon"></i></span>
+                                <span class="stat-badge positive">Deep 2.1h</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Sleep Duration</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-sleep">7.5</span>
+                                    <span class="stat-unit">hrs</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Sleep Score: 94/100</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top">
+                                <span class="stat-icon-bg"><i data-lucide="smile"></i></span>
+                                <span class="stat-badge gold-badge">Optimal</span>
+                            </div>
+                            <div class="stat-body">
+                                <span class="stat-label">Mental State</span>
+                                <div class="stat-value-group">
+                                    <span class="stat-num" id="stat-mood">⚡ Flow</span>
+                                    <span class="stat-unit">9/10</span>
+                                </div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">High Focus & Energy</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. UPCOMING GOALS & MILESTONES -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="compass" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Strategic Goals & Milestones</h3>
+                        </div>
+                        <button class="btn-ghost-sm" id="add-goal-btn"><i data-lucide="plus"></i> New Goal</button>
+                    </div>
+
+                    <div class="goals-grid" id="goals-container"></div>
+                </section>
+
+                <!-- 6. ANALYTICS & CONSISTENCY CHARTS -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="bar-chart-3" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Weekly Consistency & Performance Analytics</h3>
+                        </div>
+                        <div class="chart-period-tabs">
+                            <button class="chart-tab active" data-period="7">7 Days</button>
+                            <button class="chart-tab" data-period="30">30 Days</button>
+                        </div>
+                    </div>
+
+                    <div class="charts-split-grid">
+                        <div class="chart-card glass-card">
+                            <div class="chart-header">
+                                <h4>Daily Life Score Trend</h4>
+                                <span class="chart-avg">Avg: <strong>91.4</strong></span>
+                            </div>
+                            <div class="canvas-wrap"><canvas id="lifeScoreChart"></canvas></div>
+                        </div>
+
+                        <div class="chart-card glass-card">
+                            <div class="chart-header">
+                                <h4>Hydration & Protein Tracking</h4>
+                                <span class="chart-avg">94% Target Met</span>
+                            </div>
+                            <div class="canvas-wrap"><canvas id="vitalsChart"></canvas></div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- VIEW 2: PHYSICAL TRANSFORMATION (GLOW-UP TRACKER) -->
+        <div id="transformation-view" class="view-pane">
+            <div class="view-banner banner-transformation glass-card">
+                <div class="banner-title-box">
+                    <i data-lucide="sparkles" class="green-text"></i>
+                    <div>
+                        <h2>Physical Glow-Up & Transformation</h2>
+                        <p>Track body composition, skin clarity, hair density, beard grooming, and curated style evolutions.</p>
+                    </div>
+                </div>
+                <span class="banner-tag green-badge">Glow Index 94/100</span>
+            </div>
+
+            <main class="dashboard-grid">
+                
+                <section class="hero-section glass-card full-width glow-up-hero">
+                    <div class="hero-content">
+                        <div class="hero-left">
+                            <div class="greeting-badge">
+                                <i data-lucide="sparkles" class="gold-icon"></i>
+                                <span>Physical Glow-Up Command Center</span>
+                            </div>
+                            <h2 class="hero-title">Aesthetic <span class="gold-gradient-text">Transformation</span></h2>
+                            <p class="hero-subtitle">Track body composition, skin clarity, hair density, grooming milestones, and tailored style evolutions.</p>
+                            
+                            <div class="trans-quick-pills">
+                                <div class="trans-pill">
+                                    <span class="pill-title">Weight Delta</span>
+                                    <span class="pill-val gold-text">-8.5 kg</span>
+                                </div>
+                                <div class="trans-pill">
+                                    <span class="pill-title">Body Fat %</span>
+                                    <span class="pill-val">13.2%</span>
+                                </div>
+                                <div class="trans-pill">
+                                    <span class="pill-title">Skin Clarity</span>
+                                    <span class="pill-val green-text">88/100</span>
+                                </div>
+                                <div class="trans-pill">
+                                    <span class="pill-title">Style Index</span>
+                                    <span class="pill-val gold-text">Apex 9.4</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-right">
+                            <div class="glow-score-card glass-card">
+                                <div class="glow-score-ring">
+                                    <svg viewBox="0 0 120 120">
+                                        <circle class="score-bg" cx="60" cy="60" r="50"></circle>
+                                        <circle class="score-fill ring-study" cx="60" cy="60" r="50" style="stroke-dasharray: 314; stroke-dashoffset: 28;"></circle>
+                                    </svg>
+                                    <div class="score-center">
+                                        <span class="score-num">94</span>
+                                        <span class="score-lbl">GLOW INDEX</span>
+                                    </div>
+                                </div>
+                                <button class="btn-gold" id="open-log-trans-modal" style="width:100%; margin-top:12px; justify-content:center;">
+                                    <i data-lucide="plus-circle"></i> Log Body Stats
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="dumbbell" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Body Transformation & Composition</h3>
+                        </div>
+                        <span class="section-badge">Hypertrophy & Cut Metrics</span>
+                    </div>
+
+                    <div class="body-trans-grid">
+                        <div class="comp-cards-col">
+                            <div class="stat-card glass-card">
+                                <div class="stat-top">
+                                    <span class="stat-icon-bg"><i data-lucide="scale"></i></span>
+                                    <span class="stat-badge positive">-0.5 kg/wk</span>
+                                </div>
+                                <div class="stat-body">
+                                    <span class="stat-label">Current Weight</span>
+                                    <div class="stat-value-group">
+                                        <span class="stat-num" id="trans-weight">78.5</span>
+                                        <span class="stat-unit">kg</span>
+                                    </div>
+                                </div>
+                                <div class="stat-footer">Initial: 87.0 kg</div>
+                            </div>
+
+                            <div class="stat-card glass-card">
+                                <div class="stat-top">
+                                    <span class="stat-icon-bg"><i data-lucide="percent"></i></span>
+                                    <span class="stat-badge gold-badge">Lean Cut</span>
+                                </div>
+                                <div class="stat-body">
+                                    <span class="stat-label">Body Fat %</span>
+                                    <div class="stat-value-group">
+                                        <span class="stat-num" id="trans-fat">13.2</span>
+                                        <span class="stat-unit">%</span>
+                                    </div>
+                                </div>
+                                <div class="stat-footer">Target: 11.5%</div>
+                            </div>
+
+                            <div class="stat-card glass-card">
+                                <div class="stat-top">
+                                    <span class="stat-icon-bg"><i data-lucide="activity"></i></span>
+                                    <span class="stat-badge positive">+1.8 kg</span>
+                                </div>
+                                <div class="stat-body">
+                                    <span class="stat-label">Muscle Mass</span>
+                                    <div class="stat-value-group">
+                                        <span class="stat-num" id="trans-muscle">38.5</span>
+                                        <span class="stat-unit">kg</span>
+                                    </div>
+                                </div>
+                                <div class="stat-footer">High Lean Tissue Retention</div>
+                            </div>
+                        </div>
+
+                        <div class="measurements-card glass-card">
+                            <div class="card-header-flex">
+                                <h4>Girth & Circumference Measurements</h4>
+                                <span class="gold-text" style="font-size:0.8rem">Updated 2 Days Ago</span>
+                            </div>
+                            <div class="measurements-list">
+                                <div class="meas-item">
+                                    <span class="meas-name"><i data-lucide="ruler"></i> Waist</span>
+                                    <span class="meas-val" id="meas-waist">31.5 in</span>
+                                    <span class="meas-trend positive">-2.5 in</span>
+                                </div>
+                                <div class="meas-item">
+                                    <span class="meas-name"><i data-lucide="ruler"></i> Chest</span>
+                                    <span class="meas-val" id="meas-chest">43.0 in</span>
+                                    <span class="meas-trend positive">+1.2 in</span>
+                                </div>
+                                <div class="meas-item">
+                                    <span class="meas-name"><i data-lucide="ruler"></i> Shoulders</span>
+                                    <span class="meas-val" id="meas-shoulders">50.5 in</span>
+                                    <span class="meas-trend positive">+1.8 in</span>
+                                </div>
+                                <div class="meas-item">
+                                    <span class="meas-name"><i data-lucide="ruler"></i> Arms (Flexed)</span>
+                                    <span class="meas-val" id="meas-arms">16.2 in</span>
+                                    <span class="meas-trend positive">+0.6 in</span>
+                                </div>
+                                <div class="meas-item">
+                                    <span class="meas-name"><i data-lucide="ruler"></i> Legs (Quads)</span>
+                                    <span class="meas-val" id="meas-legs">24.0 in</span>
+                                    <span class="meas-trend positive">+0.8 in</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="chart-card glass-card">
+                            <div class="chart-header">
+                                <h4>Body Composition Evolution</h4>
+                                <span class="chart-avg">Fat Loss vs Muscle Gain</span>
+                            </div>
+                            <div class="canvas-wrap"><canvas id="bodyProgressionChart"></canvas></div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="camera" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Progress Photos & Before/After Comparison</h3>
+                        </div>
+                        <span class="section-badge">Interactive Split View</span>
+                    </div>
+
+                    <div class="photos-split-layout">
+                        <div class="comparison-card glass-card">
+                            <div class="comparison-header">
+                                <h4>Physical Glow-Up Split Comparison</h4>
+                                <span class="slider-hint"><i data-lucide="move-horizontal"></i> Drag Slider to Compare</span>
+                            </div>
+                            <div class="comparison-slider-container" id="slider-container">
+                                <div class="image-layer before-layer">
+                                    <div class="photo-placeholder before-placeholder">
+                                        <div class="photo-overlay-tag">BEFORE — 87.0 kg (22% Body Fat)</div>
+                                        <div class="placeholder-art">
+                                            <i data-lucide="user"></i>
+                                            <span>Day 1 — Baseline</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="image-layer after-layer" id="after-layer">
+                                    <div class="photo-placeholder after-placeholder">
+                                        <div class="photo-overlay-tag gold-tag">AFTER — 78.5 kg (13% Body Fat)</div>
+                                        <div class="placeholder-art gold-art">
+                                            <i data-lucide="award"></i>
+                                            <span>Day 90 — Apex Aesthetics</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="slider-handle" id="slider-handle">
+                                    <div class="handle-line"></div>
+                                    <div class="handle-button"><i data-lucide="chevrons-left-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="angle-cards-column">
+                            <div class="angle-card glass-card">
+                                <div class="angle-header">
+                                    <span class="angle-title">Front Profile</span>
+                                    <span class="angle-date">Jul 28, 2026</span>
+                                </div>
+                                <div class="angle-preview"><i data-lucide="user-check" class="gold-text"></i> <span>V-Taper & Abdominal Clarity</span></div>
+                            </div>
+
+                            <div class="angle-card glass-card">
+                                <div class="angle-header">
+                                    <span class="angle-title">Side Profile</span>
+                                    <span class="angle-date">Jul 28, 2026</span>
+                                </div>
+                                <div class="angle-preview"><i data-lucide="user-check" class="gold-text"></i> <span>Chest Projection & Posture</span></div>
+                            </div>
+
+                            <div class="angle-card glass-card">
+                                <div class="angle-header">
+                                    <span class="angle-title">Back Profile</span>
+                                    <span class="angle-date">Jul 28, 2026</span>
+                                </div>
+                                <div class="angle-preview"><i data-lucide="user-check" class="gold-text"></i> <span>Lat Width & Rear Delt Density</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="sparkle" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Skin Health & Clarity Matrix</h3>
+                        </div>
+                        <span class="section-badge">Skincare Protocol Score</span>
+                    </div>
+
+                    <div class="skin-grid">
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="sun"></i></span><span class="skin-val">88/100</span></div>
+                            <h4>Skin Score</h4>
+                            <p class="skin-desc">Radiant, even tone with zero inflammation.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:88%"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="shield-check"></i></span><span class="skin-val green-text">Clear</span></div>
+                            <h4>Acne Level</h4>
+                            <p class="skin-desc">0 Active breakouts. Salicylic acid active.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:96%; background:#34D399;"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="layers"></i></span><span class="skin-val">Minimal</span></div>
+                            <h4>Pigmentation</h4>
+                            <p class="skin-desc">Vitamin C & Niacinamide daily application.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:90%"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="smile"></i></span><span class="skin-val gold-text">92% Glow</span></div>
+                            <h4>Texture & Glow</h4>
+                            <p class="skin-desc">Hyaluronic hydration + Night Retinol.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:92%"></div></div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="split-grid-container full-width">
+                    <section class="checklist-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="scissors" class="gold-text"></i>
+                                <h3>Hair Density & Growth Tracker</h3>
+                            </div>
+                            <button class="btn-ghost-sm" id="reset-wash-btn"><i data-lucide="droplet"></i> Wash Hair Today</button>
+                        </div>
+
+                        <div class="hair-stats-row">
+                            <div class="hair-stat"><span class="hair-lbl">Hair Density</span><span class="hair-val gold-text">94% Thick</span></div>
+                            <div class="hair-stat"><span class="hair-lbl">Growth Rate</span><span class="hair-val">+0.5 in/mo</span></div>
+                            <div class="hair-stat"><span class="hair-lbl">Hair Wash Tracker</span><span class="hair-val green-text" id="hair-wash-val">Washed Today</span></div>
+                        </div>
+
+                        <div class="haircut-history-box">
+                            <h4 style="font-size:0.9rem; margin-bottom:10px;">Haircut & Barber History</h4>
+                            <div class="haircut-list" id="haircut-container">
+                                <div class="haircut-item">
+                                    <div class="haircut-meta">
+                                        <span class="haircut-style">Low Taper Fade + Textured Crop</span>
+                                        <span class="haircut-date">Jul 20, 2026</span>
+                                    </div>
+                                    <span class="gold-text" style="font-size:0.8rem">★★★★★ (Master Barber)</span>
+                                </div>
+                                <div class="haircut-item">
+                                    <div class="haircut-meta">
+                                        <span class="haircut-style">Mid Fade + Fringe Clean Up</span>
+                                        <span class="haircut-date">Jun 25, 2026</span>
+                                    </div>
+                                    <span class="gold-text" style="font-size:0.8rem">★★★★☆ (Apex Studio)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="schedule-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="user-check" class="gold-text"></i>
+                                <h3>Beard Growth & Grooming Timeline</h3>
+                            </div>
+                            <span class="completion-pill">Next Trim: 3 Days</span>
+                        </div>
+
+                        <div class="beard-tracker-content">
+                            <div class="beard-stage-card">
+                                <span class="stage-tag">Current Stage</span>
+                                <h4 class="stage-title">15mm Tailored Heavy Stubble</h4>
+                                <p class="stage-desc">Defined cheeklines, lined neckline, conditioned with Argan & Jojoba beard oil daily.</p>
+                            </div>
+
+                            <div class="beard-metrics-grid">
+                                <div class="b-metric"><span class="bm-label">Beard Density</span><span class="bm-val gold-text">96% Uniform</span></div>
+                                <div class="b-metric"><span class="bm-label">Growth Rate</span><span class="bm-val">0.4mm / Day</span></div>
+                                <div class="b-metric"><span class="bm-label">Derma Roller Protocol</span><span class="bm-val green-text">2x / Week (0.5mm)</span></div>
+                                <div class="b-metric"><span class="bm-label">Conditioning</span><span class="bm-val">Daily Oil Routine</span></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="shirt" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Style Evolution & Wardrobe Progress</h3>
+                        </div>
+                        <button class="btn-ghost-sm" id="open-wishlist-modal"><i data-lucide="plus"></i> Add to Wishlist</button>
+                    </div>
+
+                    <div class="style-split-grid">
+                        <div class="outfits-card glass-card">
+                            <div class="card-header-flex">
+                                <h4>Signature Fit Capsules</h4>
+                                <span class="gold-text" style="font-size:0.8rem">3 Curated Fits</span>
+                            </div>
+                            <div class="outfits-grid">
+                                <div class="outfit-item">
+                                    <div class="outfit-icon"><i data-lucide="zap"></i></div>
+                                    <div class="outfit-info">
+                                        <h5>Monochrome Stealth</h5>
+                                        <p>Matte black heavy tee + Tapered trousers + Minimal sneakers</p>
+                                    </div>
+                                    <span class="outfit-tag">Casual Apex</span>
+                                </div>
+
+                                <div class="outfit-item">
+                                    <div class="outfit-icon"><i data-lucide="briefcase"></i></div>
+                                    <div class="outfit-info">
+                                        <h5>Executive Formal</h5>
+                                        <p>Charcoal tailored blazer + White Oxford + Leather Chelsea boots</p>
+                                    </div>
+                                    <span class="outfit-tag">Formal</span>
+                                </div>
+
+                                <div class="outfit-item">
+                                    <div class="outfit-icon"><i data-lucide="activity"></i></div>
+                                    <div class="outfit-info">
+                                        <h5>Athleisure Performance</h5>
+                                        <p>Seamless compression top + Performance shorts + Carbon runners</p>
+                                    </div>
+                                    <span class="outfit-tag">Fitness</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="wishlist-card glass-card">
+                            <div class="card-header-flex">
+                                <h4>Style Wishlist & Upgrades</h4>
+                                <span class="completion-pill" id="wishlist-count-badge">2/4 Acquired</span>
+                            </div>
+                            <ul class="wishlist-ul" id="wishlist-container"></ul>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- VIEW 3: GYM WORKOUT OPERATING SYSTEM (GYM OS) -->
+        <div id="gym-view" class="view-pane">
+            <div class="view-banner banner-gym glass-card">
+                <div class="banner-title-box">
+                    <i data-lucide="dumbbell" class="gold-text"></i>
+                    <div>
+                        <h2>Gym Operating System</h2>
+                        <p>Log workout splits, track sets & reps, run rest timers, and smash personal records.</p>
+                    </div>
+                </div>
+                <span class="banner-tag gold-badge">Workout Active</span>
+            </div>
+
+            <main class="dashboard-grid">
+                
+                <section class="hero-section glass-card full-width gym-hero">
+                    <div class="hero-content">
+                        <div class="hero-left">
+                            <div class="greeting-badge">
+                                <i data-lucide="flame" class="gold-icon"></i>
+                                <span id="active-split-badge">ACTIVE SPLIT: PUSH DAY A</span>
+                            </div>
+                            <h2 class="hero-title" id="gym-workout-title">Push Day — <span class="gold-gradient-text">Chest, Shoulders & Triceps</span></h2>
+                            <p class="hero-subtitle">Progressive overload protocol. Record your sets, reps, and weights to smash personal records.</p>
+                            
+                            <div class="gym-stats-row">
+                                <div class="gym-stat-pill">
+                                    <span class="gym-stat-lbl">Target Exercises</span>
+                                    <span class="gym-stat-val gold-text" id="target-ex-count">5 Exercises</span>
+                                </div>
+                                <div class="gym-stat-pill">
+                                    <span class="gym-stat-lbl">Total Planned Sets</span>
+                                    <span class="gym-stat-val">18 Sets</span>
+                                </div>
+                                <div class="gym-stat-pill">
+                                    <span class="gym-stat-lbl">Est. Target Volume</span>
+                                    <span class="gym-stat-val green-text">12,450 kg</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="hero-right timer-station-wrap">
+                            <div class="timer-card glass-card">
+                                <span class="timer-lbl"><i data-lucide="timer" class="gold-text"></i> Workout Elapsed Time</span>
+                                <div class="timer-display" id="workout-timer-display">00:42:15</div>
+                                <div class="timer-controls">
+                                    <button class="btn-ghost-sm" id="btn-toggle-workout-timer"><i data-lucide="play" id="icon-workout-timer"></i> Start</button>
+                                    <button class="btn-ghost-sm" id="btn-reset-workout-timer"><i data-lucide="rotate-ccw"></i> Reset</button>
+                                </div>
+                            </div>
+
+                            <div class="rest-timer-card glass-card">
+                                <div class="rest-ring-wrap">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle class="score-bg" cx="50" cy="50" r="42"></circle>
+                                        <circle class="score-fill ring-workout" id="rest-ring-fill" cx="50" cy="50" r="42" style="stroke-dasharray: 264; stroke-dashoffset: 0;"></circle>
+                                    </svg>
+                                    <div class="rest-inner">
+                                        <span class="rest-sec" id="rest-timer-display">90s</span>
+                                        <span class="rest-sub">REST TIMER</span>
+                                    </div>
+                                </div>
+
+                                <div class="quick-rest-btns">
+                                    <button class="preset-rest-btn" data-sec="60">60s</button>
+                                    <button class="preset-rest-btn active" data-sec="90">90s</button>
+                                    <button class="preset-rest-btn" data-sec="120">120s</button>
+                                    <button class="preset-rest-btn" data-sec="180">180s</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="split-selector-bar glass-card">
+                        <span class="split-bar-label"><i data-lucide="layers" class="gold-text"></i> Select Routine Split:</span>
+                        <div class="split-pills-group">
+                            <button class="split-pill active" data-split="push"><i data-lucide="chevrons-up"></i> Push (Chest/Shoulders/Tri)</button>
+                            <button class="split-pill" data-split="pull"><i data-lucide="chevrons-down"></i> Pull (Back/Biceps/Rear)</button>
+                            <button class="split-pill" data-split="legs"><i data-lucide="footprints"></i> Legs (Quads/Hams/Calves)</button>
+                            <button class="split-pill" data-split="upper"><i data-lucide="shield"></i> Upper Body Power</button>
+                            <button class="split-pill" data-split="lower"><i data-lucide="zap"></i> Lower Body Hypertrophy</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="list-checks" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Today's Exercise Logger</h3>
+                        </div>
+                        <button class="btn-gold" id="open-add-ex-modal"><i data-lucide="plus"></i> Add Custom Exercise</button>
+                    </div>
+
+                    <div class="exercises-container" id="exercises-container"></div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="trophy" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Personal Records (PRs) Hall of Fame</h3>
+                        </div>
+                        <button class="btn-ghost-sm" id="open-log-pr-modal"><i data-lucide="plus"></i> Log New PR</button>
+                    </div>
+
+                    <div class="prs-grid" id="prs-container"></div>
+                </section>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="trending-up" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Strength Progression Analytics</h3>
+                        </div>
+                        <div class="pr-chart-tabs">
+                            <button class="chart-tab active" data-prlift="bench">Bench Press</button>
+                            <button class="chart-tab" data-prlift="squat">Squat</button>
+                            <button class="chart-tab" data-prlift="deadlift">Deadlift</button>
+                            <button class="chart-tab" data-prlift="pullup">Weighted Pull-up</button>
+                        </div>
+                    </div>
+
+                    <div class="chart-card glass-card full-width">
+                        <div class="chart-header">
+                            <h4 id="pr-chart-title">Bench Press (1RM Progression)</h4>
+                            <span class="gold-text" id="pr-chart-alltime">All-Time PR: <strong>120.0 kg</strong></span>
+                        </div>
+                        <div class="canvas-wrap" style="height:280px;"><canvas id="strengthChart"></canvas></div>
+                    </div>
+                </section>
+
+                <div class="split-grid-container full-width">
+                    <section class="checklist-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="calendar" class="gold-text"></i>
+                                <h3>Workout Calendar & Frequency</h3>
+                            </div>
+                            <span class="completion-pill">4 Sessions Completed This Week</span>
+                        </div>
+
+                        <div class="workout-calendar-grid">
+                            <div class="cal-day completed-day"><span class="cal-day-name">MON</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Push A</span></div>
+                            <div class="cal-day completed-day"><span class="cal-day-name">TUE</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Pull A</span></div>
+                            <div class="cal-day rest-day"><span class="cal-day-name">WED</span><i data-lucide="moon" class="muted-icon"></i><span class="cal-split-tag">Rest & Recov</span></div>
+                            <div class="cal-day completed-day"><span class="cal-day-name">THU</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Legs A</span></div>
+                            <div class="cal-day active-day"><span class="cal-day-name">FRI</span><i data-lucide="flame" class="gold-text"></i><span class="cal-split-tag">Push B Today</span></div>
+                            <div class="cal-day upcoming-day"><span class="cal-day-name">SAT</span><i data-lucide="circle-dashed"></i><span class="cal-split-tag">Pull B</span></div>
+                            <div class="cal-day rest-day"><span class="cal-day-name">SUN</span><i data-lucide="moon" class="muted-icon"></i><span class="cal-split-tag">Active Rest</span></div>
+                        </div>
+                    </section>
+
+                    <section class="schedule-section glass-card">
+                        <div class="card-header-flex">
+                            <div class="header-title-box">
+                                <i data-lucide="bar-chart-2" class="gold-text"></i>
+                                <h3>Weekly Muscle Volume Tracker</h3>
+                            </div>
+                            <span class="gold-text" style="font-weight:700">42,500 kg Total</span>
+                        </div>
+
+                        <div class="volume-bars-list">
+                            <div class="vol-item">
+                                <div class="vol-header"><span>Chest</span><span class="gold-text">18 Sets (12,800 kg)</span></div>
+                                <div class="vol-bar-track"><div class="vol-bar-fill" style="width: 90%;"></div></div>
+                            </div>
+                            <div class="vol-item">
+                                <div class="vol-header"><span>Back & Lats</span><span class="gold-text">20 Sets (14,200 kg)</span></div>
+                                <div class="vol-bar-track"><div class="vol-bar-fill" style="width: 100%;"></div></div>
+                            </div>
+                            <div class="vol-item">
+                                <div class="vol-header"><span>Quads & Hamstrings</span><span class="gold-text">22 Sets (15,500 kg)</span></div>
+                                <div class="vol-bar-track"><div class="vol-bar-fill" style="width: 95%;"></div></div>
+                            </div>
+                            <div class="vol-item">
+                                <div class="vol-header"><span>Shoulders</span><span class="gold-text">14 Sets (8,400 kg)</span></div>
+                                <div class="vol-bar-track"><div class="vol-bar-fill" style="width: 70%;"></div></div>
+                            </div>
+                            <div class="vol-item">
+                                <div class="vol-header"><span>Arms (Biceps/Triceps)</span><span class="gold-text">16 Sets (6,200 kg)</span></div>
+                                <div class="vol-bar-track"><div class="vol-bar-fill" style="width: 80%;"></div></div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="shield-check" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Muscle Recovery & Fatigue Tracker</h3>
+                        </div>
+                        <span class="section-badge">CNS & Tissue Readiness</span>
+                    </div>
+
+                    <div class="skin-grid">
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="zap"></i></span><span class="skin-val green-text">95% Ready</span></div>
+                            <h4>Chest & Triceps</h4>
+                            <p class="skin-desc">Fully recovered. Optimal CNS readiness for Push session.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:95%; background:#34D399;"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="clock"></i></span><span class="skin-val gold-text">60% Recov</span></div>
+                            <h4>Back & Biceps</h4>
+                            <p class="skin-desc">Trained Tuesday. 18 Hours rest remaining.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:60%;"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="activity"></i></span><span class="skin-val">85% Ready</span></div>
+                            <h4>Quads & Glutes</h4>
+                            <p class="skin-desc">Slight residual DOMS. Ready for tomorrow's Leg B.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:85%;"></div></div>
+                        </div>
+
+                        <div class="skin-card glass-card">
+                            <div class="skin-top"><span class="skin-icon-box"><i data-lucide="check-circle-2"></i></span><span class="skin-val green-text">100% Peak</span></div>
+                            <h4>Shoulders & Abs</h4>
+                            <p class="skin-desc">Zero fatigue. Maximum overhead power potential.</p>
+                            <div class="skin-progress-bar"><div class="skin-progress-fill" style="width:100%; background:#34D399;"></div></div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>MOMENTUM OS &copy; 2026 — Designed for Peak Performance, Glow-Up & Hypertrophy Strength. Inspired by Apple, Notion & Linear.</p>
+        </footer>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal-overlay" id="stats-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="sliders" class="gold-text"></i> Update Daily Quick Stats</h3>
+                <button class="modal-close-btn" id="close-stats-modal">&times;</button>
+            </div>
+            <form id="stats-form" class="modal-body">
+                <div class="form-group"><label for="input-weight">Weight (kg)</label><input type="number" step="0.1" id="input-weight" required></div>
+                <div class="form-group"><label for="input-calories">Calories (kcal)</label><input type="number" id="input-calories" required></div>
+                <div class="form-group"><label for="input-protein">Protein (g)</label><input type="number" id="input-protein" required></div>
+                <div class="form-group"><label for="input-water">Water (Liters)</label><input type="number" step="0.1" id="input-water" required></div>
+                <div class="form-group"><label for="input-sleep">Sleep (Hours)</label><input type="number" step="0.1" id="input-sleep" required></div>
+                <div class="form-group">
+                    <label for="input-mood">Mental State / Mood</label>
+                    <select id="input-mood">
+                        <option value="⚡ Flow">⚡ Flow State (9-10)</option>
+                        <option value="🔥 Energized">🔥 Energized (8)</option>
+                        <option value="⚖️ Focused">⚖️ Focused (7)</option>
+                        <option value="😴 Fatigue">😴 Tired (5)</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-stats-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="mission-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="target" class="gold-text"></i> Edit Current Mission</h3>
+                <button class="modal-close-btn" id="close-mission-modal">&times;</button>
+            </div>
+            <form id="mission-form" class="modal-body">
+                <div class="form-group"><label for="input-mission">Mission Statement</label><textarea id="input-mission" rows="3" required></textarea></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-mission-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Update Mission</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="goal-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="compass" class="gold-text"></i> Add New Strategic Goal</h3>
+                <button class="modal-close-btn" id="close-goal-modal">&times;</button>
+            </div>
+            <form id="goal-form" class="modal-body">
+                <div class="form-group"><label for="in-goal-title">Goal Title</label><input type="text" id="in-goal-title" placeholder="e.g. Master System Architecture" required></div>
+                <div class="form-group"><label for="in-goal-cat">Category</label><input type="text" id="in-goal-cat" placeholder="Engineering / Health" required></div>
+                <div class="form-group"><label for="in-goal-date">Target Date</label><input type="text" id="in-goal-date" placeholder="Aug 31, 2026" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-goal-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Save Goal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="trans-log-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="scale" class="gold-text"></i> Log Body Measurements</h3>
+                <button class="modal-close-btn" id="close-trans-modal">&times;</button>
+            </div>
+            <form id="trans-log-form" class="modal-body">
+                <div class="form-group"><label for="in-trans-weight">Weight (kg)</label><input type="number" step="0.1" id="in-trans-weight" required></div>
+                <div class="form-group"><label for="in-trans-fat">Body Fat %</label><input type="number" step="0.1" id="in-trans-fat" required></div>
+                <div class="form-group"><label for="in-trans-muscle">Muscle Mass (kg)</label><input type="number" step="0.1" id="in-trans-muscle" required></div>
+                <div class="form-group"><label for="in-trans-waist">Waist Measurement (in)</label><input type="number" step="0.1" id="in-trans-waist" required></div>
+                <div class="form-group"><label for="in-trans-chest">Chest Measurement (in)</label><input type="number" step="0.1" id="in-trans-chest" required></div>
+                <div class="form-group"><label for="in-trans-arms">Arms Measurement (in)</label><input type="number" step="0.1" id="in-trans-arms" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-trans-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Update Body Measurements</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="wishlist-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="shirt" class="gold-text"></i> Add Style Wishlist Item</h3>
+                <button class="modal-close-btn" id="close-wishlist-modal">&times;</button>
+            </div>
+            <form id="wishlist-form" class="modal-body">
+                <div class="form-group"><label for="in-wish-item">Item Name</label><input type="text" id="in-wish-item" placeholder="e.g. Minimalist Watch" required></div>
+                <div class="form-group"><label for="in-wish-price">Target Price ($)</label><input type="text" id="in-wish-price" placeholder="$250" required></div>
+                <div class="form-group"><label for="in-wish-cat">Category Tag</label><input type="text" id="in-wish-cat" placeholder="Outerwear / Footwear" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-wishlist-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="pr-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="trophy" class="gold-text"></i> Record Personal Record (PR)</h3>
+                <button class="modal-close-btn" id="close-pr-modal">&times;</button>
+            </div>
+            <form id="pr-form" class="modal-body">
+                <div class="form-group">
+                    <label for="in-pr-lift">Lift Name</label>
+                    <select id="in-pr-lift">
+                        <option value="Bench Press">Barbell Bench Press</option>
+                        <option value="Squat">Barbell Back Squat</option>
+                        <option value="Deadlift">Conventional Deadlift</option>
+                        <option value="Weighted Pull-up">Weighted Pull-Up</option>
+                        <option value="Overhead Press">Standing Overhead Press</option>
+                    </select>
+                </div>
+                <div class="form-group"><label for="in-pr-weight">Weight (kg)</label><input type="number" step="0.5" id="in-pr-weight" required></div>
+                <div class="form-group"><label for="in-pr-reps">Reps Executed</label><input type="number" id="in-pr-reps" value="5" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-pr-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Record PR</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="add-ex-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="plus-circle" class="gold-text"></i> Add Exercise to Routine</h3>
+                <button class="modal-close-btn" id="close-add-ex-modal">&times;</button>
+            </div>
+            <form id="add-ex-form" class="modal-body">
+                <div class="form-group"><label for="in-ex-name">Exercise Name</label><input type="text" id="in-ex-name" placeholder="e.g. Incline Dumbbell Press" required></div>
+                <div class="form-group"><label for="in-ex-muscle">Target Muscle</label><input type="text" id="in-ex-muscle" placeholder="Chest / Shoulders" required></div>
+                <div class="form-group"><label for="in-ex-sets">Target Sets</label><input type="number" id="in-ex-sets" value="4" required></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-add-ex-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Add Exercise</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Engine JS -->
+    <script src="app.js"></script>
+</body>
+</html>
