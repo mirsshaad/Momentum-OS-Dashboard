@@ -75,6 +75,36 @@
             ]
         },
 
+        skincare: {
+            am: {
+                cleanser: false,
+                vitc: false,
+                niacinamide: false,
+                moisturizer: false,
+                sunscreen: false
+            },
+            pm: {
+                cleanser: false,
+                serum: false,
+                moisturizer: false,
+                retinol: false
+            },
+            metrics: {
+                tone: 94,
+                pigment: 'Minimal (-15%)',
+                acne: '0 Active (Clear)',
+                texture: 95
+            },
+            products: [
+                { id: 'p1', name: 'Hydrating Cleanser', brand: 'CeraVe / Derma Formula', category: 'CLEANSER', ingredient: 'Hyaluronic Acid + Ceramides', pao: 'PAO: 12M', stock: 80 },
+                { id: 'p2', name: '15% L-Ascorbic Acid + Ferulic', brand: 'SkinCeuticals C E Ferulic', category: 'AM SERUM', ingredient: 'Pure Vitamin C 15%', pao: 'PAO: 6M', stock: 50 },
+                { id: 'p3', name: 'Niacinamide 10% + Zinc 1%', brand: 'The Ordinary', category: 'SERUM', ingredient: 'Vitamin B3 + Zinc PCA', pao: 'PAO: 12M', stock: 70 },
+                { id: 'p4', name: '0.5% Pure Retinol Night Serum', brand: "Paula's Choice Clinical", category: 'PM SERUM', ingredient: 'Pure Retinol 0.5%', pao: 'PAO: 6M', stock: 65 },
+                { id: 'p5', name: 'Cicaplast Baume B5+ Cream', brand: 'La Roche-Posay', category: 'MOISTURIZER', ingredient: 'Panthenol 5% + Madecassoside', pao: 'PAO: 12M', stock: 25 },
+                { id: 'p6', name: 'Anthelios Fluid SPF 50+', brand: 'La Roche-Posay', category: 'SUNSCREEN', ingredient: 'Mexoryl 400 UV Shield', pao: 'PAO: 12M', stock: 90 }
+            ]
+        },
+
         gym: {
             activeSplit: 'push',
             restTargetSec: 90,
@@ -399,6 +429,8 @@
         setupTimers();
         setupEventListeners();
         setupBeforeAfterSlider();
+        setupSkinBeforeAfterSlider();
+        setupSkincareController();
         setupCommandPalette();
         renderAll();
         initCharts();
@@ -589,6 +621,7 @@
         renderQuote();
         renderTransformation();
         renderGymOS();
+        renderSkincareOS();
     }
 
     function renderHero() {
@@ -1845,6 +1878,9 @@
                 } else if (action === 'nav-gym') {
                     const tab = document.querySelector('.nav-tab[data-view="gym"]');
                     if (tab) tab.click();
+                } else if (action === 'nav-skincare') {
+                    const tab = document.querySelector('.nav-tab[data-view="skincare"]');
+                    if (tab) tab.click();
                 } else if (action === 'act-pr') {
                     const tab = document.querySelector('.nav-tab[data-view="gym"]');
                     if (tab) tab.click();
@@ -1865,6 +1901,335 @@
                 }
             });
         }
+    }
+
+    // SKINCARE OPERATING SYSTEM CONTROLLER
+    function renderSkincareOS() {
+        if (!state.skincare) return;
+
+        // Render AM Steps
+        const amObj = state.skincare.am || {};
+        let amDone = 0, amTotal = 5;
+        const amKeys = ['cleanser', 'vitc', 'niacinamide', 'moisturizer', 'sunscreen'];
+        amKeys.forEach(key => {
+            const stepEl = document.querySelector(`.step-item[data-step="am-${key}"]`);
+            if (stepEl) {
+                if (amObj[key]) {
+                    stepEl.classList.add('completed-step');
+                    amDone++;
+                } else {
+                    stepEl.classList.remove('completed-step');
+                }
+            }
+        });
+
+        const amPct = Math.round((amDone / amTotal) * 100);
+        const amText = document.getElementById('am-pct-text');
+        const amFill = document.getElementById('am-progress-fill');
+        const amStatus = document.getElementById('skin-am-status');
+        if (amText) amText.textContent = `${amPct}%`;
+        if (amFill) amFill.style.width = `${amPct}%`;
+        if (amStatus) amStatus.textContent = `${amDone} / ${amTotal} Done`;
+
+        // Render PM Steps
+        const pmObj = state.skincare.pm || {};
+        let pmDone = 0, pmTotal = 4;
+        const pmKeys = ['cleanser', 'serum', 'moisturizer', 'retinol'];
+        pmKeys.forEach(key => {
+            const stepEl = document.querySelector(`.step-item[data-step="pm-${key}"]`);
+            if (stepEl) {
+                if (pmObj[key]) {
+                    stepEl.classList.add('completed-step');
+                    pmDone++;
+                } else {
+                    stepEl.classList.remove('completed-step');
+                }
+            }
+        });
+
+        const pmPct = Math.round((pmDone / pmTotal) * 100);
+        const pmText = document.getElementById('pm-pct-text');
+        const pmFill = document.getElementById('pm-progress-fill');
+        const pmStatus = document.getElementById('skin-pm-status');
+        if (pmText) pmText.textContent = `${pmPct}%`;
+        if (pmFill) pmFill.style.width = `${pmPct}%`;
+        if (pmStatus) pmStatus.textContent = `${pmDone} / ${pmTotal} Done`;
+
+        // Overall Ring Progress
+        const totalDone = amDone + pmDone;
+        const totalSteps = amTotal + pmTotal;
+        const overallPct = Math.round((totalDone / totalSteps) * 100);
+
+        const ringVal = document.getElementById('skin-pct-val');
+        const ringFill = document.getElementById('skin-ring-fill');
+        if (ringVal) ringVal.textContent = `${overallPct}%`;
+        if (ringFill) {
+            const circumference = 314;
+            const offset = circumference - (overallPct / 100) * circumference;
+            ringFill.style.strokeDashoffset = offset;
+        }
+
+        // Render Skin Metrics
+        const metrics = state.skincare.metrics || { tone: 94, pigment: 'Minimal (-15%)', acne: '0 Active (Clear)', texture: 95 };
+        const toneVal = document.getElementById('skin-tone-val');
+        const pigmentVal = document.getElementById('skin-pigment-val');
+        const acneVal = document.getElementById('skin-acne-val');
+        const textureVal = document.getElementById('skin-texture-val');
+
+        if (toneVal) toneVal.textContent = `${metrics.tone}% Radiant`;
+        if (pigmentVal) pigmentVal.textContent = metrics.pigment;
+        if (acneVal) acneVal.textContent = metrics.acne;
+        if (textureVal) textureVal.textContent = typeof metrics.texture === 'number' ? `${metrics.texture}% Smooth` : metrics.texture;
+
+        const barTone = document.getElementById('bar-skin-tone');
+        const barPigment = document.getElementById('bar-skin-pigment');
+        const barAcne = document.getElementById('bar-skin-acne');
+        const barTexture = document.getElementById('bar-skin-texture');
+
+        if (barTone) barTone.style.width = `${metrics.tone}%`;
+        if (barPigment) barPigment.style.width = `85%`;
+        if (barAcne) barAcne.style.width = `100%`;
+        if (barTexture) barTexture.style.width = typeof metrics.texture === 'number' ? `${metrics.texture}%` : '95%';
+
+        renderProductVanity();
+    }
+
+    function renderProductVanity() {
+        const grid = document.getElementById('product-vanity-grid');
+        if (!grid || !state.skincare || !state.skincare.products) return;
+
+        let html = '';
+        state.skincare.products.forEach(prod => {
+            const stockColor = prod.stock > 50 ? 'green-text' : (prod.stock > 30 ? 'gold-text' : 'red-text');
+            const stockBg = prod.stock > 50 ? '#34D399' : (prod.stock > 30 ? '#D4AF37' : '#EF4444');
+            const isGoldTag = prod.category.includes('AM') || prod.category.includes('PM') || prod.category.includes('SUN');
+
+            html += `
+                <div class="prod-card glass-card">
+                    <div class="prod-top">
+                        <span class="prod-category-tag ${isGoldTag ? 'gold-tag' : ''}">${prod.category}</span>
+                        <span class="pao-badge">${prod.pao}</span>
+                    </div>
+                    <h4 class="prod-title">${prod.name}</h4>
+                    <span class="prod-brand">${prod.brand}</span>
+                    <div class="prod-details-meta">
+                        <span><i data-lucide="zap"></i> ${prod.ingredient}</span>
+                        <span><i data-lucide="clock"></i> Active Routine Formula</span>
+                    </div>
+                    <div class="prod-status-row">
+                        <span class="prod-status ${stockColor}">Stock: ${prod.stock}%</span>
+                        <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: ${prod.stock}%; background: ${stockBg};"></div></div>
+                    </div>
+                </div>
+            `;
+        });
+        grid.innerHTML = html;
+        if (window.lucide) window.lucide.createIcons();
+    }
+
+    function setupSkincareController() {
+        // Toggle Step Click Handler
+        document.addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-action="toggle-skin-step"]');
+            if (!btn) return;
+            const target = btn.dataset.target;
+            if (!target || !state.skincare) return;
+
+            const [period, stepKey] = target.split('-');
+            if (state.skincare[period]) {
+                state.skincare[period][stepKey] = !state.skincare[period][stepKey];
+                saveState();
+                renderSkincareOS();
+                playSound('check');
+
+                // Check 100% routine completion celebration
+                const amDone = Object.values(state.skincare.am).filter(Boolean).length === 5;
+                const pmDone = Object.values(state.skincare.pm).filter(Boolean).length === 4;
+                if (amDone && pmDone) {
+                    addXP(250);
+                    if (window.confetti) window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+                }
+            }
+        });
+
+        // Quick AM Complete Button
+        const quickAmBtn = document.getElementById('btn-quick-am');
+        if (quickAmBtn) {
+            quickAmBtn.addEventListener('click', () => {
+                if (!state.skincare) return;
+                for (let k in state.skincare.am) state.skincare.am[k] = true;
+                saveState();
+                renderSkincareOS();
+                playSound('complete');
+            });
+        }
+
+        // Quick PM Complete Button
+        const quickPmBtn = document.getElementById('btn-quick-pm');
+        if (quickPmBtn) {
+            quickPmBtn.addEventListener('click', () => {
+                if (!state.skincare) return;
+                for (let k in state.skincare.pm) state.skincare.pm[k] = true;
+                saveState();
+                renderSkincareOS();
+                playSound('complete');
+            });
+        }
+
+        // SPF 2-Hour Timer Controller
+        let spfTimerSeconds = 7200;
+        let spfTimerInterval = null;
+        const spfTimerBtn = document.getElementById('btn-start-spf-timer');
+        const spfDisplay = document.getElementById('spf-timer-display');
+
+        if (spfTimerBtn) {
+            spfTimerBtn.addEventListener('click', () => {
+                if (spfTimerInterval) clearInterval(spfTimerInterval);
+                spfTimerSeconds = 7200;
+                updateSpfDisplay();
+                playSound('check');
+
+                spfTimerInterval = setInterval(() => {
+                    if (spfTimerSeconds > 0) {
+                        spfTimerSeconds--;
+                        updateSpfDisplay();
+                    } else {
+                        clearInterval(spfTimerInterval);
+                        playSound('rest-alarm');
+                        alert('☀️ Sunscreen Reapplication Alert! 2 hours have elapsed.');
+                    }
+                }, 1000);
+            });
+        }
+
+        function updateSpfDisplay() {
+            if (!spfDisplay) return;
+            const h = String(Math.floor(spfTimerSeconds / 3600)).padStart(2, '0');
+            const m = String(Math.floor((spfTimerSeconds % 3600) / 60)).padStart(2, '0');
+            const s = String(spfTimerSeconds % 60).padStart(2, '0');
+            spfDisplay.textContent = `${h}:${m}:${s}`;
+        }
+
+        // Modals for Skincare Log & Add Product
+        const skinModal = document.getElementById('skincare-log-modal');
+        const openSkinModalBtn = document.getElementById('btn-open-skin-modal');
+        const closeSkinModalBtn = document.getElementById('close-skin-modal');
+        const cancelSkinModalBtn = document.getElementById('cancel-skin-modal');
+        const skinForm = document.getElementById('skin-log-form');
+
+        if (skinModal && openSkinModalBtn) {
+            openSkinModalBtn.addEventListener('click', () => {
+                skinModal.classList.add('active');
+                if (state.skincare && state.skincare.metrics) {
+                    const m = state.skincare.metrics;
+                    document.getElementById('in-skin-tone').value = m.tone || 94;
+                    document.getElementById('in-skin-pigment').value = m.pigment || 'Minimal (-15%)';
+                    document.getElementById('in-skin-acne').value = m.acne || '0 Active (Clear)';
+                    document.getElementById('in-skin-texture').value = typeof m.texture === 'number' ? m.texture : 95;
+                }
+            });
+            [closeSkinModalBtn, cancelSkinModalBtn].forEach(btn => {
+                if (btn) btn.addEventListener('click', () => skinModal.classList.remove('active'));
+            });
+            if (skinForm) {
+                skinForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    state.skincare.metrics = {
+                        tone: parseInt(document.getElementById('in-skin-tone').value) || 94,
+                        pigment: document.getElementById('in-skin-pigment').value,
+                        acne: document.getElementById('in-skin-acne').value,
+                        texture: parseInt(document.getElementById('in-skin-texture').value) || 95
+                    };
+                    saveState();
+                    renderSkincareOS();
+                    skinModal.classList.remove('active');
+                    playSound('complete');
+                });
+            }
+        }
+
+        // Add Product Modal
+        const prodModal = document.getElementById('add-prod-modal');
+        const openProdModalBtn = document.getElementById('btn-open-prod-modal');
+        const openProdCollectionBtn = document.getElementById('btn-add-prod-collection');
+        const closeProdModalBtn = document.getElementById('close-prod-modal');
+        const cancelProdModalBtn = document.getElementById('cancel-prod-modal');
+        const prodForm = document.getElementById('add-prod-form');
+
+        if (prodModal) {
+            [openProdModalBtn, openProdCollectionBtn].forEach(btn => {
+                if (btn) btn.addEventListener('click', () => prodModal.classList.add('active'));
+            });
+            [closeProdModalBtn, cancelProdModalBtn].forEach(btn => {
+                if (btn) btn.addEventListener('click', () => prodModal.classList.remove('active'));
+            });
+            if (prodForm) {
+                prodForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const newProd = {
+                        id: 'p-' + Date.now(),
+                        name: document.getElementById('in-prod-name').value,
+                        brand: document.getElementById('in-prod-brand').value,
+                        category: document.getElementById('in-prod-category').value,
+                        ingredient: document.getElementById('in-prod-ingredient').value,
+                        pao: document.getElementById('in-prod-pao').value,
+                        stock: 100
+                    };
+                    if (!state.skincare.products) state.skincare.products = [];
+                    state.skincare.products.unshift(newProd);
+                    saveState();
+                    renderSkincareOS();
+                    prodForm.reset();
+                    prodModal.classList.remove('active');
+                    playSound('complete');
+                });
+            }
+        }
+    }
+
+    function setupSkinBeforeAfterSlider() {
+        const container = document.getElementById('skin-slider-container');
+        const afterLayer = document.getElementById('skin-after-layer');
+        const handle = document.getElementById('skin-slider-handle');
+
+        if (!container || !afterLayer || !handle) return;
+
+        let isDragging = false;
+
+        function updateSliderPosition(clientX) {
+            const rect = container.getBoundingClientRect();
+            let x = clientX - rect.left;
+            if (x < 0) x = 0;
+            if (x > rect.width) x = rect.width;
+            const pct = (x / rect.width) * 100;
+
+            afterLayer.style.clipPath = `polygon(${pct}% 0, 100% 0, 100% 100%, ${pct}% 100%)`;
+            handle.style.left = `${pct}%`;
+        }
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            updateSliderPosition(e.clientX);
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            updateSliderPosition(e.clientX);
+        });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        container.addEventListener('touchstart', (e) => {
+            isDragging = true;
+            if (e.touches[0]) updateSliderPosition(e.touches[0].clientX);
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging || !e.touches[0]) return;
+            updateSliderPosition(e.touches[0].clientX);
+        }, { passive: true });
+
+        window.addEventListener('touchend', () => { isDragging = false; });
     }
 
     function updateChartsData() {

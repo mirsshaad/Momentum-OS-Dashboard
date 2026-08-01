@@ -48,6 +48,9 @@
                 <button class="nav-tab" data-view="gym">
                     <i data-lucide="dumbbell"></i> Gym OS
                 </button>
+                <button class="nav-tab" data-view="skincare">
+                    <i data-lucide="droplet"></i> Skincare OS
+                </button>
             </nav>
 
             <div class="header-center">
@@ -1220,6 +1223,536 @@
                     </div>
                 </section>
 
+            <!-- ==========================================================================
+                 VIEW PANE 4: SKINCARE OPERATING SYSTEM (DARK LUXURY DERMA DASHBOARD)
+                 ========================================================================== -->
+            <main class="view-pane" id="skincare-view">
+                <!-- HERO BANNER -->
+                <div class="hero-card glass-card skincare-hero">
+                    <div class="hero-content-wrap">
+                        <div class="hero-text-side">
+                            <span class="hero-badge gold-glow-badge"><i data-lucide="droplet"></i> DERMATOLOGICAL PRECISION</span>
+                            <h2 class="hero-title">SKINCARE <span class="gold-text">OS</span></h2>
+                            <p class="hero-subtitle">Dark luxury skincare dashboard tracking morning/night protocols, active ingredients, skin health biometrics, and product collection.</p>
+                            
+                            <div class="hero-metrics-row">
+                                <div class="hero-metric-item">
+                                    <span class="metric-label">GLOW STREAK</span>
+                                    <span class="metric-val gold-text" id="skin-streak-val">24 Days ✨</span>
+                                </div>
+                                <div class="hero-metric-divider"></div>
+                                <div class="hero-metric-item">
+                                    <span class="metric-label">AM ROUTINE</span>
+                                    <span class="metric-val" id="skin-am-status">0 / 5 Done</span>
+                                </div>
+                                <div class="hero-metric-divider"></div>
+                                <div class="hero-metric-item">
+                                    <span class="metric-label">PM ROUTINE</span>
+                                    <span class="metric-val" id="skin-pm-status">0 / 4 Done</span>
+                                </div>
+                                <div class="hero-metric-divider"></div>
+                                <div class="hero-metric-item">
+                                    <span class="metric-label">SKIN CLARITY</span>
+                                    <span class="metric-val green-text" id="skin-clarity-val">94% Radiant</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CIRCULAR SKINCARE PROGRESS RING -->
+                        <div class="hero-ring-side">
+                            <div class="circular-ring-container">
+                                <svg class="progress-ring-svg" viewBox="0 0 120 120">
+                                    <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                                    <circle class="ring-fill gold-ring-stroke" id="skin-ring-fill" cx="60" cy="60" r="50" style="stroke-dasharray: 314; stroke-dashoffset: 314;"></circle>
+                                </svg>
+                                <div class="ring-center-text">
+                                    <span class="ring-pct-val" id="skin-pct-val">0%</span>
+                                    <span class="ring-pct-sub">Today's Care</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-actions-bar">
+                        <button class="quick-act-btn" id="btn-quick-am"><i data-lucide="sun"></i> Complete Morning Routine</button>
+                        <button class="quick-act-btn" id="btn-quick-pm"><i data-lucide="moon"></i> Complete Night Routine</button>
+                        <button class="quick-act-btn" id="btn-open-skin-modal"><i data-lucide="sliders"></i> Log Skin Metrics</button>
+                        <button class="quick-act-btn" id="btn-open-prod-modal"><i data-lucide="plus-circle"></i> Add Vanity Product</button>
+                    </div>
+                </div>
+
+                <!-- 1. MORNING & NIGHT ROUTINE CARDS -->
+                <section class="section-container full-width">
+                    <div class="grid-2col">
+                        <!-- MORNING ROUTINE -->
+                        <div class="skincare-routine-card glass-card" id="card-am-routine">
+                            <div class="routine-card-header">
+                                <div class="routine-title-wrap">
+                                    <span class="routine-icon-box am-icon"><i data-lucide="sun"></i></span>
+                                    <div>
+                                        <h3 class="routine-title">Morning Routine</h3>
+                                        <span class="routine-sub">Protect, Brighten & Shield (AM Protocol)</span>
+                                    </div>
+                                </div>
+                                <span class="routine-time-badge">07:30 AM</span>
+                            </div>
+
+                            <div class="routine-progress-wrap">
+                                <div class="routine-progress-text">
+                                    <span>AM Progress</span>
+                                    <span class="gold-text" id="am-pct-text">0%</span>
+                                </div>
+                                <div class="routine-progress-track">
+                                    <div class="routine-progress-fill" id="am-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="step-items-list" id="am-steps-list">
+                                <!-- Cleanser -->
+                                <div class="step-item" data-step="am-cleanser">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="am-cleanser"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">1. Gentle Cleanser</span>
+                                            <span class="step-tag">PURIFY</span>
+                                        </div>
+                                        <p class="step-desc">Hydrating amino acid cleanser to remove night oils without stripping barrier.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Vitamin C -->
+                                <div class="step-item" data-step="am-vitc">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="am-vitc"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">2. Vitamin C Serum (15% L-Ascorbic)</span>
+                                            <span class="step-tag gold-tag">ANTIOXIDANT</span>
+                                        </div>
+                                        <p class="step-desc">Neutralizes free radicals, boosts collagen synthesis & brightens tone.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Niacinamide -->
+                                <div class="step-item" data-step="am-niacinamide">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="am-niacinamide"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">3. Niacinamide Serum (10% B3)</span>
+                                            <span class="step-tag">PORE REFINING</span>
+                                        </div>
+                                        <p class="step-desc">Regulates sebum production, reduces redness & strengthens lipid barrier.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Moisturizer -->
+                                <div class="step-item" data-step="am-moisturizer">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="am-moisturizer"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">4. Ceramide Moisturizer</span>
+                                            <span class="step-tag">HYDRATION</span>
+                                        </div>
+                                        <p class="step-desc">Locks in active serums with hyaluronic acid & 3 essential ceramides.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Sunscreen -->
+                                <div class="step-item" data-step="am-sunscreen">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="am-sunscreen"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">5. Broad Spectrum Sunscreen (SPF 50+)</span>
+                                            <span class="step-tag gold-tag">UV SHIELD</span>
+                                        </div>
+                                        <p class="step-desc">Non-greasy fluid sunscreen protecting against UVA/UVB rays & premature aging.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- NIGHT ROUTINE -->
+                        <div class="skincare-routine-card glass-card" id="card-pm-routine">
+                            <div class="routine-card-header">
+                                <div class="routine-title-wrap">
+                                    <span class="routine-icon-box pm-icon"><i data-lucide="moon"></i></span>
+                                    <div>
+                                        <h3 class="routine-title">Night Routine</h3>
+                                        <span class="routine-sub">Repair, Renew & Restore (PM Protocol)</span>
+                                    </div>
+                                </div>
+                                <span class="routine-time-badge">10:30 PM</span>
+                            </div>
+
+                            <div class="routine-progress-wrap">
+                                <div class="routine-progress-text">
+                                    <span>PM Progress</span>
+                                    <span class="gold-text" id="pm-pct-text">0%</span>
+                                </div>
+                                <div class="routine-progress-track">
+                                    <div class="routine-progress-fill" id="pm-progress-fill" style="width: 0%;"></div>
+                                </div>
+                            </div>
+
+                            <div class="step-items-list" id="pm-steps-list">
+                                <!-- Cleanser -->
+                                <div class="step-item" data-step="pm-cleanser">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="pm-cleanser"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">1. Double Cleanser</span>
+                                            <span class="step-tag">DEEP PURIFY</span>
+                                        </div>
+                                        <p class="step-desc">Cleansing balm followed by foaming gel to remove sunscreen & pollutants.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Serum -->
+                                <div class="step-item" data-step="pm-serum">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="pm-serum"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">2. Repair & Hydrating Serum</span>
+                                            <span class="step-tag gold-tag">HYALURONIC MATRIX</span>
+                                        </div>
+                                        <p class="step-desc">Multi-molecular weight hyaluronic acid & peptide complex for deep hydration.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Moisturizer -->
+                                <div class="step-item" data-step="pm-moisturizer">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="pm-moisturizer"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">3. Deep Recovery Night Cream</span>
+                                            <span class="step-tag">BARRIER REPAIR</span>
+                                        </div>
+                                        <p class="step-desc">Rich lipid cream with squalane to prevent transepidermal water loss.</p>
+                                    </div>
+                                </div>
+
+                                <!-- Retinol -->
+                                <div class="step-item" data-step="pm-retinol">
+                                    <button class="step-check-btn" data-action="toggle-skin-step" data-target="pm-retinol"><i data-lucide="check"></i></button>
+                                    <div class="step-details">
+                                        <div class="step-top-line">
+                                            <span class="step-name">4. Pure Retinol Treatment (0.5%)</span>
+                                            <span class="step-tag gold-tag">CELL TURNOVER</span>
+                                        </div>
+                                        <p class="step-desc">Stimulates cell regeneration, smooths fine lines & clears cellular congestion.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. SKIN HEALTH BIOMETRICS & METRICS -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="activity" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Skin Health & Biometrics Breakdown</h3>
+                        </div>
+                        <span class="section-badge">Dermatological Analytics</span>
+                    </div>
+
+                    <div class="skin-grid">
+                        <!-- Skin Tone -->
+                        <div class="skin-card glass-card">
+                            <div class="skin-top">
+                                <span class="skin-icon-box"><i data-lucide="sparkles"></i></span>
+                                <span class="skin-val green-text" id="skin-tone-val">94% Radiant</span>
+                            </div>
+                            <h4>Skin Tone & Radiance</h4>
+                            <p class="skin-desc">Even pigment distribution with healthy natural luminosity.</p>
+                            <div class="skin-progress-bar">
+                                <div class="skin-progress-fill" id="bar-skin-tone" style="width: 94%; background:#34D399;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Pigmentation -->
+                        <div class="skin-card glass-card">
+                            <div class="skin-top">
+                                <span class="skin-icon-box"><i data-lucide="sun"></i></span>
+                                <span class="skin-val gold-text" id="skin-pigment-val">Minimal (-15%)</span>
+                            </div>
+                            <h4>Pigmentation & Dark Spots</h4>
+                            <p class="skin-desc">Post-acne marks fading steadily due to Vitamin C & Niacinamide.</p>
+                            <div class="skin-progress-bar">
+                                <div class="skin-progress-fill" id="bar-skin-pigment" style="width: 85%;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Acne -->
+                        <div class="skin-card glass-card">
+                            <div class="skin-top">
+                                <span class="skin-icon-box"><i data-lucide="shield"></i></span>
+                                <span class="skin-val green-text" id="skin-acne-val">0 Active</span>
+                            </div>
+                            <h4>Acne & Lesion Status</h4>
+                            <p class="skin-desc">Zero active breakout lesions. Sebum production fully balanced.</p>
+                            <div class="skin-progress-bar">
+                                <div class="skin-progress-fill" id="bar-skin-acne" style="width: 100%; background:#34D399;"></div>
+                            </div>
+                        </div>
+
+                        <!-- Texture -->
+                        <div class="skin-card glass-card">
+                            <div class="skin-top">
+                                <span class="skin-icon-box"><i data-lucide="layers"></i></span>
+                                <span class="skin-val gold-text" id="skin-texture-val">95% Smooth</span>
+                            </div>
+                            <h4>Skin Texture & Pores</h4>
+                            <p class="skin-desc">Micro-texture is refined and pores are visibly tightened.</p>
+                            <div class="skin-progress-bar">
+                                <div class="skin-progress-fill" id="bar-skin-texture" style="width: 95%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. WEEKLY COMPARISON & SKIN PHOTOS -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="camera" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Weekly Skin Photos & Progression</h3>
+                        </div>
+                        <span class="section-badge">Visual Derma Log</span>
+                    </div>
+
+                    <div class="grid-2col">
+                        <!-- Before & After Comparison Slider -->
+                        <div class="slider-card glass-card">
+                            <div class="slider-header">
+                                <h4>Weekly Visual Comparison</h4>
+                                <span class="slider-badge">Week 1 vs Current Week</span>
+                            </div>
+
+                            <div class="slider-container" id="skin-slider-container">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80" alt="Week 1 Baseline Skin" class="slider-img img-before">
+                                
+                                <div class="img-after-layer" id="skin-after-layer">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80" alt="Current Radiant Skin" class="slider-img img-after">
+                                </div>
+
+                                <div class="slider-handle" id="skin-slider-handle">
+                                    <div class="handle-line"></div>
+                                    <div class="handle-button"><i data-lucide="chevrons-left-right"></i></div>
+                                    <div class="handle-line"></div>
+                                </div>
+
+                                <span class="img-label label-before">Week 1 Baseline</span>
+                                <span class="img-label label-after">Current Radiant Skin</span>
+                            </div>
+
+                            <p class="slider-caption">Drag slider to compare pore texture refinement and tone clarity over 4 weeks of consistent protocol.</p>
+                        </div>
+
+                        <!-- Weekly Photo Gallery Grid -->
+                        <div class="gallery-card glass-card">
+                            <div class="slider-header">
+                                <h4>Skin Progress Photo Log</h4>
+                                <button class="btn-sm btn-gold" id="btn-add-skin-photo"><i data-lucide="plus"></i> Add Photo</button>
+                            </div>
+
+                            <div class="skin-photo-grid">
+                                <div class="photo-thumb-card">
+                                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" alt="Week 1">
+                                    <div class="photo-thumb-info">
+                                        <span class="photo-week">Week 1</span>
+                                        <span class="photo-date">Jul 01</span>
+                                    </div>
+                                </div>
+
+                                <div class="photo-thumb-card">
+                                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80" alt="Week 2">
+                                    <div class="photo-thumb-info">
+                                        <span class="photo-week">Week 2</span>
+                                        <span class="photo-date">Jul 08</span>
+                                    </div>
+                                </div>
+
+                                <div class="photo-thumb-card">
+                                    <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80" alt="Week 3">
+                                    <div class="photo-thumb-info">
+                                        <span class="photo-week">Week 3</span>
+                                        <span class="photo-date">Jul 15</span>
+                                    </div>
+                                </div>
+
+                                <div class="photo-thumb-card active-thumb">
+                                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" alt="Week 4">
+                                    <div class="photo-thumb-info">
+                                        <span class="photo-week">Week 4 (Current)</span>
+                                        <span class="photo-date">Jul 31</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. PRODUCT COLLECTION (DIGITAL VANITY CABINET) -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="package" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Product Collection & Digital Vanity</h3>
+                        </div>
+                        <button class="btn-gold" id="btn-add-prod-collection"><i data-lucide="plus"></i> Add Product</button>
+                    </div>
+
+                    <div class="product-collection-grid" id="product-vanity-grid">
+                        <!-- Cleanser -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag">CLEANSER</span>
+                                <span class="pao-badge">PAO: 12M</span>
+                            </div>
+                            <h4 class="prod-title">Hydrating Hydrating Cleanser</h4>
+                            <span class="prod-brand">CeraVe / Dermatological Formula</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="zap"></i> Hyaluronic Acid + Ceramides</span>
+                                <span><i data-lucide="clock"></i> AM & PM Daily</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status green-text">In Stock (80%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 80%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Vitamin C -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag gold-tag">AM SERUM</span>
+                                <span class="pao-badge">PAO: 6M</span>
+                            </div>
+                            <h4 class="prod-title">15% L-Ascorbic Acid + Ferulic</h4>
+                            <span class="prod-brand">SkinCeuticals C E Ferulic</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="sun"></i> Pure Vitamin C 15%</span>
+                                <span><i data-lucide="clock"></i> AM Every Morning</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status gold-text">Half Full (50%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 50%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Niacinamide -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag">SERUM</span>
+                                <span class="pao-badge">PAO: 12M</span>
+                            </div>
+                            <h4 class="prod-title">Niacinamide 10% + Zinc 1%</h4>
+                            <span class="prod-brand">The Ordinary</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="layers"></i> Vitamin B3 + Zinc PCA</span>
+                                <span><i data-lucide="clock"></i> AM & PM Daily</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status green-text">In Stock (70%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 70%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Retinol -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag gold-tag">PM TREATMENT</span>
+                                <span class="pao-badge">PAO: 6M</span>
+                            </div>
+                            <h4 class="prod-title">0.5% Pure Retinol Night Serum</h4>
+                            <span class="prod-brand">Paula's Choice / Clinical</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="moon"></i> Pure Retinol 0.5%</span>
+                                <span><i data-lucide="clock"></i> PM 4x Weekly</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status green-text">In Stock (65%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 65%;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Barrier Cream -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag">MOISTURIZER</span>
+                                <span class="pao-badge">PAO: 12M</span>
+                            </div>
+                            <h4 class="prod-title">Cicaplast Baume B5+ Soothing Cream</h4>
+                            <span class="prod-brand">La Roche-Posay</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="shield"></i> Panthenol 5% + Madecassoside</span>
+                                <span><i data-lucide="clock"></i> AM & PM Daily</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status red-text">Low Stock (25%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 25%; background:#EF4444;"></div></div>
+                            </div>
+                        </div>
+
+                        <!-- Sunscreen -->
+                        <div class="prod-card glass-card">
+                            <div class="prod-top">
+                                <span class="prod-category-tag gold-tag">SUNSCREEN</span>
+                                <span class="pao-badge">PAO: 12M</span>
+                            </div>
+                            <h4 class="prod-title">Anthelios UVMune 400 Fluid SPF 50+</h4>
+                            <span class="prod-brand">La Roche-Posay</span>
+                            <div class="prod-details-meta">
+                                <span><i data-lucide="sun"></i> Mexoryl 400 UV Filter</span>
+                                <span><i data-lucide="clock"></i> AM Every 2-3 Hours</span>
+                            </div>
+                            <div class="prod-status-row">
+                                <span class="prod-status green-text">In Stock (90%)</span>
+                                <div class="prod-stock-bar"><div class="prod-stock-fill" style="width: 90%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. ROUTINE REMINDERS & SUNSCREEN ALERT STATION -->
+                <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="bell" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Routine Reminders & Care Schedule</h3>
+                        </div>
+                        <span class="section-badge">Automated Alerts</span>
+                    </div>
+
+                    <div class="grid-3col">
+                        <div class="reminder-card glass-card">
+                            <div class="reminder-top">
+                                <i data-lucide="sun" class="gold-text"></i>
+                                <span class="reminder-title">Morning Routine Alert</span>
+                            </div>
+                            <div class="reminder-time">07:30 AM</div>
+                            <p class="reminder-desc">Trigger AM protocol before morning sunlight exposure.</p>
+                        </div>
+
+                        <div class="reminder-card glass-card">
+                            <div class="reminder-top">
+                                <i data-lucide="clock" class="gold-text"></i>
+                                <span class="reminder-title">Sunscreen Reapplication Timer</span>
+                            </div>
+                            <div class="reminder-time" id="spf-timer-display">02:00:00</div>
+                            <button class="btn-sm btn-gold" id="btn-start-spf-timer"><i data-lucide="play"></i> Reset 2-Hr Timer</button>
+                        </div>
+
+                        <div class="reminder-card glass-card">
+                            <div class="reminder-top">
+                                <i data-lucide="moon" class="gold-text"></i>
+                                <span class="reminder-title">Night Routine Alert</span>
+                            </div>
+                            <div class="reminder-time">10:30 PM</div>
+                            <p class="reminder-desc">Apply Retinol & barrier repair 30 mins before sleep.</p>
+                        </div>
+                    </div>
+                </section>
             </main>
         </div>
 
@@ -1375,6 +1908,78 @@
                 </div>
             </form>
         </div>
+    <!-- SKINCARE LOG BIOMETRICS MODAL -->
+    <div class="modal-overlay" id="skincare-log-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="droplet" class="gold-text"></i> Update Skin Health & Biometrics</h3>
+                <button class="modal-close-btn" id="close-skin-modal">&times;</button>
+            </div>
+            <form id="skin-log-form" class="modal-body">
+                <div class="form-group">
+                    <label for="in-skin-tone">Skin Tone Radiance Score (%)</label>
+                    <input type="number" id="in-skin-tone" value="94" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-skin-pigment">Pigmentation Status</label>
+                    <input type="text" id="in-skin-pigment" value="Minimal (-15%)" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-skin-acne">Active Acne Lesions</label>
+                    <input type="text" id="in-skin-acne" value="0 Active (Clear)" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-skin-texture">Texture Smoothness Score (%)</label>
+                    <input type="number" id="in-skin-texture" value="95" min="0" max="100" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-skin-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Save Skin Metrics</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ADD VANITY PRODUCT MODAL -->
+    <div class="modal-overlay" id="add-prod-modal">
+        <div class="modal-card glass-card">
+            <div class="modal-header">
+                <h3><i data-lucide="package" class="gold-text"></i> Add Product to Digital Vanity</h3>
+                <button class="modal-close-btn" id="close-prod-modal">&times;</button>
+            </div>
+            <form id="add-prod-form" class="modal-body">
+                <div class="form-group">
+                    <label for="in-prod-name">Product Name</label>
+                    <input type="text" id="in-prod-name" placeholder="e.g. BHA 2% Liquid Exfoliant" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-prod-brand">Brand</label>
+                    <input type="text" id="in-prod-brand" placeholder="e.g. Paula's Choice" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-prod-category">Category</label>
+                    <select id="in-prod-category">
+                        <option value="CLEANSER">Cleanser</option>
+                        <option value="AM SERUM">AM Serum (Vit C)</option>
+                        <option value="PM SERUM">PM Serum (Retinol/Exfoliant)</option>
+                        <option value="MOISTURIZER">Moisturizer</option>
+                        <option value="SUNSCREEN">Sunscreen (SPF)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="in-prod-ingredient">Key Active Ingredient</label>
+                    <input type="text" id="in-prod-ingredient" placeholder="e.g. Salicylic Acid 2%" required>
+                </div>
+                <div class="form-group">
+                    <label for="in-prod-pao">Period After Opening (PAO)</label>
+                    <input type="text" id="in-prod-pao" value="PAO: 12M" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancel-prod-modal">Cancel</button>
+                    <button type="submit" class="btn-gold">Add to Vanity</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- COMMAND PALETTE MODAL (CMD + K) -->
@@ -1407,6 +2012,12 @@
                     <div class="cmd-item-info">
                         <span class="cmd-item-title">Go to Gym Operating System</span>
                         <span class="cmd-item-sub">Log workout splits, sets, reps & rest timer</span>
+                    </div>
+                <div class="cmd-item" data-action="nav-skincare">
+                    <i data-lucide="droplet" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Go to Skincare Operating System</span>
+                        <span class="cmd-item-sub">Track morning/night protocols, active ingredients & vanity products</span>
                     </div>
                     <kbd>↵ Jump</kbd>
                 </div>
