@@ -1,0 +1,19 @@
+{
+  "name": "momentum-os-dashboard",
+  "version": "2.4.0",
+  "description": "Apple, Notion & Linear inspired personal operating system dashboard with habits, stats, progress rings, physical transformation, and Gym OS.",
+  "main": "app.js",
+  "scripts": {
+    "dev": "npx serve -l 8080 .",
+    "start": "npx serve -l 8080 ."
+  },
+  "keywords": [
+    "momentum-os",
+    "dashboard",
+    "personal-os",
+    "gym-os",
+    "productivity"
+  ],
+  "author": "mirsshaad",
+  "license": "MIT"
+}
