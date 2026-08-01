@@ -60,10 +60,22 @@
             </div>
 
             <div class="header-actions">
+                <button class="cmd-k-btn" id="open-cmd-palette-btn" title="Quick Actions (Cmd+K / Ctrl+K)">
+                    <i data-lucide="search"></i>
+                    <span>Search / Actions</span>
+                    <kbd>⌘K</kbd>
+                </button>
+                <button class="icon-btn" id="export-data-btn" title="Export Data Backup (JSON)" aria-label="Export Data">
+                    <i data-lucide="download"></i>
+                </button>
+                <button class="icon-btn" id="import-data-btn" title="Import Data Backup (JSON)" aria-label="Import Data">
+                    <i data-lucide="upload"></i>
+                </button>
+                <input type="file" id="import-file-input" accept=".json" style="display:none;">
                 <button class="icon-btn" id="sound-toggle-btn" title="Toggle Audio Feedback" aria-label="Toggle Sound">
                     <i data-lucide="volume-2" id="sound-icon"></i>
                 </button>
-                <button class="icon-btn" id="reset-data-btn" title="Reset/Seed Sample Data" aria-label="Reset Data">
+                <button class="icon-btn" id="reset-data-btn" title="Reset to Defaults" aria-label="Reset Data">
                     <i data-lucide="rotate-ccw"></i>
                 </button>
                 <div class="user-avatar-pill">
@@ -878,23 +890,34 @@
                     <i data-lucide="dumbbell" class="gold-text"></i>
                     <div>
                         <h2>Gym Operating System</h2>
-                        <p>Log workout splits, track sets & reps, run rest timers, and smash personal records.</p>
+                        <p>Your Personal AI Gym Coach. Log workout splits, track sets & reps, run rest timers, and smash personal records.</p>
                     </div>
                 </div>
-                <span class="banner-tag gold-badge">Workout Active</span>
+                <div class="banner-actions">
+                    <span class="banner-tag gold-badge" id="gym-status-badge">⚡ Workout Active</span>
+                </div>
+            </div>
+
+            <!-- QUICK ACTIONS TOOLBAR -->
+            <div class="quick-actions-bar glass-card">
+                <button class="quick-act-btn btn-gold" id="btn-start-workout"><i data-lucide="play-circle"></i> Start Workout</button>
+                <button class="quick-act-btn btn-ghost-sm" id="btn-quick-add-ex"><i data-lucide="plus-circle"></i> Add Exercise</button>
+                <button class="quick-act-btn btn-ghost-sm" id="btn-quick-history"><i data-lucide="calendar"></i> View History</button>
+                <button class="quick-act-btn btn-ghost-sm" id="btn-quick-compare"><i data-lucide="trending-up"></i> Compare Progress</button>
             </div>
 
             <main class="dashboard-grid">
                 
-                <section class="hero-section glass-card full-width gym-hero">
+                <!-- 1. TODAY'S WORKOUT HERO CARD -->
+                <section class="hero-section glass-card full-width gym-hero" id="today-workout-hero-card">
                     <div class="hero-content">
                         <div class="hero-left">
                             <div class="greeting-badge">
                                 <i data-lucide="flame" class="gold-icon"></i>
-                                <span id="active-split-badge">ACTIVE SPLIT: PUSH DAY A</span>
+                                <span id="active-split-badge">TODAY'S SPLIT: PUSH DAY A</span>
                             </div>
                             <h2 class="hero-title" id="gym-workout-title">Push Day — <span class="gold-gradient-text">Chest, Shoulders & Triceps</span></h2>
-                            <p class="hero-subtitle">Progressive overload protocol. Record your sets, reps, and weights to smash personal records.</p>
+                            <p class="hero-subtitle">Progressive overload protocol. Automatically scheduled based on your weekly split cycle.</p>
                             
                             <div class="gym-stats-row">
                                 <div class="gym-stat-pill">
@@ -902,26 +925,37 @@
                                     <span class="gym-stat-val gold-text" id="target-ex-count">5 Exercises</span>
                                 </div>
                                 <div class="gym-stat-pill">
-                                    <span class="gym-stat-lbl">Total Planned Sets</span>
-                                    <span class="gym-stat-val">18 Sets</span>
+                                    <span class="gym-stat-lbl">Sets Completed</span>
+                                    <span class="gym-stat-val" id="gym-sets-progress">12 / 18 Sets</span>
                                 </div>
                                 <div class="gym-stat-pill">
-                                    <span class="gym-stat-lbl">Est. Target Volume</span>
-                                    <span class="gym-stat-val green-text">12,450 kg</span>
+                                    <span class="gym-stat-lbl">Est. Volume</span>
+                                    <span class="gym-stat-val green-text" id="gym-total-volume">12,450 kg</span>
+                                </div>
+                                <div class="gym-stat-pill">
+                                    <span class="gym-stat-lbl">Gym Streak</span>
+                                    <span class="gym-stat-val gold-text" id="gym-streak-val">14 Days 🔥</span>
                                 </div>
                             </div>
                         </div>
 
                         <div class="hero-right timer-station-wrap">
-                            <div class="timer-card glass-card">
-                                <span class="timer-lbl"><i data-lucide="timer" class="gold-text"></i> Workout Elapsed Time</span>
-                                <div class="timer-display" id="workout-timer-display">00:42:15</div>
-                                <div class="timer-controls">
-                                    <button class="btn-ghost-sm" id="btn-toggle-workout-timer"><i data-lucide="play" id="icon-workout-timer"></i> Start</button>
-                                    <button class="btn-ghost-sm" id="btn-reset-workout-timer"><i data-lucide="rotate-ccw"></i> Reset</button>
+                            <!-- Circular Workout Progress Ring -->
+                            <div class="life-score-card workout-ring-card">
+                                <div class="score-ring-container">
+                                    <svg class="score-svg" viewBox="0 0 160 160">
+                                        <circle class="score-bg" cx="80" cy="80" r="70"></circle>
+                                        <circle class="score-fill ring-workout" id="workout-progress-ring-fill" cx="80" cy="80" r="70" style="stroke-dasharray: 440; stroke-dashoffset: 140;"></circle>
+                                    </svg>
+                                    <div class="score-inner">
+                                        <span class="score-val" id="workout-pct-val">67%</span>
+                                        <span class="score-label">WORKOUT %</span>
+                                    </div>
                                 </div>
+                                <span class="score-status" id="workout-completion-status"><i data-lucide="loader" class="gold-text"></i> In Progress</span>
                             </div>
 
+                            <!-- Live Rest Timer Station -->
                             <div class="rest-timer-card glass-card">
                                 <div class="rest-ring-wrap">
                                     <svg viewBox="0 0 100 100">
@@ -932,6 +966,12 @@
                                         <span class="rest-sec" id="rest-timer-display">90s</span>
                                         <span class="rest-sub">REST TIMER</span>
                                     </div>
+                                </div>
+
+                                <div class="rest-controls-row" style="display:flex; gap:6px; margin: 8px 0; justify-content:center;">
+                                    <button class="btn-ghost-sm" id="btn-start-rest-timer"><i data-lucide="play"></i> Start</button>
+                                    <button class="btn-ghost-sm" id="btn-pause-rest-timer"><i data-lucide="pause"></i> Pause</button>
+                                    <button class="btn-ghost-sm" id="btn-reset-rest-timer"><i data-lucide="rotate-ccw"></i> Reset</button>
                                 </div>
 
                                 <div class="quick-rest-btns">
@@ -970,7 +1010,8 @@
                     <div class="exercises-container" id="exercises-container"></div>
                 </section>
 
-                <section class="section-container full-width">
+                <!-- 3. PERSONAL RECORDS (PRS) HALL OF FAME -->
+                <section class="section-container full-width" id="prs-section">
                     <div class="section-header">
                         <div class="section-title-wrap">
                             <i data-lucide="trophy" class="section-icon gold-text"></i>
@@ -982,7 +1023,75 @@
                     <div class="prs-grid" id="prs-container"></div>
                 </section>
 
+                <!-- 4. GYM ANALYTICS DASHBOARD -->
                 <section class="section-container full-width">
+                    <div class="section-header">
+                        <div class="section-title-wrap">
+                            <i data-lucide="activity" class="section-icon gold-text"></i>
+                            <h3 class="section-title">Gym Performance Analytics</h3>
+                        </div>
+                        <span class="section-badge">Calculated Biometrics & 1RM</span>
+                    </div>
+
+                    <div class="quick-stats-grid">
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="dumbbell"></i></span><span class="stat-badge positive">+12% MoM</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Total Workouts</span>
+                                <div class="stat-value-group"><span class="stat-num" id="ana-total-workouts">48</span><span class="stat-unit">Sessions</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Consistency: 96%</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="flame"></i></span><span class="stat-badge gold-badge">Active</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Current Streak</span>
+                                <div class="stat-value-group"><span class="stat-num" id="ana-current-streak">14</span><span class="stat-unit">Days 🔥</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Longest Streak: 21 Days</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="clock"></i></span><span class="stat-badge neutral">Optimal</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Avg Workout Time</span>
+                                <div class="stat-value-group"><span class="stat-num" id="ana-avg-time">54</span><span class="stat-unit">min</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Optimal Hypertrophy Range</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="zap"></i></span><span class="stat-badge positive">34% Vol</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Most Trained Muscle</span>
+                                <div class="stat-value-group"><span class="stat-num" style="font-size:1.4rem;" id="ana-strong-muscle">Chest & Tri</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">18 Sets / Week</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="alert-circle"></i></span><span class="stat-badge neutral">Focus Required</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Weakest Muscle</span>
+                                <div class="stat-value-group"><span class="stat-num" style="font-size:1.4rem;" id="ana-weak-muscle">Calves</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Recommended: +4 Sets</span></div>
+                        </div>
+
+                        <div class="stat-card glass-card">
+                            <div class="stat-top"><span class="stat-icon-bg"><i data-lucide="award"></i></span><span class="stat-badge gold-badge">1RM Matrix</span></div>
+                            <div class="stat-body">
+                                <span class="stat-label">Bench 1RM Est.</span>
+                                <div class="stat-value-group"><span class="stat-num" id="ana-bench-1rm">136.0</span><span class="stat-unit">kg</span></div>
+                            </div>
+                            <div class="stat-footer"><span class="stat-sub">Squat 1RM: 180kg | Deadlift: 220kg</span></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. PROGRESS CHARTS & TIME FRAME TOGGLE -->
+                <section class="section-container full-width" id="charts-section">
                     <div class="section-header">
                         <div class="section-title-wrap">
                             <i data-lucide="trending-up" class="section-icon gold-text"></i>
@@ -993,36 +1102,47 @@
                             <button class="chart-tab" data-prlift="squat">Squat</button>
                             <button class="chart-tab" data-prlift="deadlift">Deadlift</button>
                             <button class="chart-tab" data-prlift="pullup">Weighted Pull-up</button>
+                            <button class="chart-tab" data-prlift="volume">Total Volume</button>
                         </div>
                     </div>
 
                     <div class="chart-card glass-card full-width">
                         <div class="chart-header">
-                            <h4 id="pr-chart-title">Bench Press (1RM Progression)</h4>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <h4 id="pr-chart-title">Bench Press (1RM Progression)</h4>
+                                <div class="period-btn-group">
+                                    <button class="btn-period active" data-period="weekly">Weekly</button>
+                                    <button class="btn-period" data-period="monthly">Monthly</button>
+                                    <button class="btn-period" data-period="yearly">Yearly</button>
+                                </div>
+                            </div>
                             <span class="gold-text" id="pr-chart-alltime">All-Time PR: <strong>120.0 kg</strong></span>
                         </div>
-                        <div class="canvas-wrap" style="height:280px;"><canvas id="strengthChart"></canvas></div>
+                        <div class="canvas-wrap" style="height:300px;"><canvas id="strengthChart"></canvas></div>
                     </div>
                 </section>
 
-                <div class="split-grid-container full-width">
+                <!-- 6. WORKOUT HISTORY & CALENDAR VIEW -->
+                <div class="split-grid-container full-width" id="history-section">
                     <section class="checklist-section glass-card">
                         <div class="card-header-flex">
                             <div class="header-title-box">
                                 <i data-lucide="calendar" class="gold-text"></i>
-                                <h3>Workout Calendar & Frequency</h3>
+                                <h3>Workout History Calendar</h3>
                             </div>
-                            <span class="completion-pill">4 Sessions Completed This Week</span>
+                            <div class="cal-legend" style="display:flex; gap:10px; font-size:0.75rem;">
+                                <span><span class="legend-dot green"></span> Completed</span>
+                                <span><span class="legend-dot yellow"></span> Partial</span>
+                                <span><span class="legend-dot red"></span> Rest/Missed</span>
+                            </div>
                         </div>
 
-                        <div class="workout-calendar-grid">
-                            <div class="cal-day completed-day"><span class="cal-day-name">MON</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Push A</span></div>
-                            <div class="cal-day completed-day"><span class="cal-day-name">TUE</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Pull A</span></div>
-                            <div class="cal-day rest-day"><span class="cal-day-name">WED</span><i data-lucide="moon" class="muted-icon"></i><span class="cal-split-tag">Rest & Recov</span></div>
-                            <div class="cal-day completed-day"><span class="cal-day-name">THU</span><i data-lucide="check-circle-2" class="gold-text"></i><span class="cal-split-tag">Legs A</span></div>
-                            <div class="cal-day active-day"><span class="cal-day-name">FRI</span><i data-lucide="flame" class="gold-text"></i><span class="cal-split-tag">Push B Today</span></div>
-                            <div class="cal-day upcoming-day"><span class="cal-day-name">SAT</span><i data-lucide="circle-dashed"></i><span class="cal-split-tag">Pull B</span></div>
-                            <div class="cal-day rest-day"><span class="cal-day-name">SUN</span><i data-lucide="moon" class="muted-icon"></i><span class="cal-split-tag">Active Rest</span></div>
+                        <div class="calendar-month-title" style="margin: 10px 0 14px 0; font-weight:700; color:var(--text-gold);">
+                            July - August 2026 History
+                        </div>
+
+                        <div class="full-calendar-grid" id="full-calendar-grid">
+                            <!-- Populated dynamically via app.js -->
                         </div>
                     </section>
 
@@ -1254,6 +1374,67 @@
                     <button type="submit" class="btn-gold">Add Exercise</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- COMMAND PALETTE MODAL (CMD + K) -->
+    <div class="modal-overlay" id="cmd-palette-modal">
+        <div class="modal-card glass-card cmd-palette-card">
+            <div class="cmd-input-wrap">
+                <i data-lucide="search" class="cmd-search-icon"></i>
+                <input type="text" id="cmd-search-input" placeholder="Type a command or search OS features... (e.g. Gym, PR, Dash)" autofocus>
+                <span class="cmd-esc-tag">ESC</span>
+            </div>
+            <div class="cmd-results-list" id="cmd-results-list">
+                <div class="cmd-item" data-action="nav-dash">
+                    <i data-lucide="layout-dashboard" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Go to Daily Dashboard</span>
+                        <span class="cmd-item-sub">View habits, vitals, life score and today's schedule</span>
+                    </div>
+                    <kbd>↵ Jump</kbd>
+                </div>
+                <div class="cmd-item" data-action="nav-glow">
+                    <i data-lucide="sparkles" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Go to Physical Glow-Up & Transformation</span>
+                        <span class="cmd-item-sub">View body fat %, skin score, hair density & wishlist</span>
+                    </div>
+                    <kbd>↵ Jump</kbd>
+                </div>
+                <div class="cmd-item" data-action="nav-gym">
+                    <i data-lucide="dumbbell" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Go to Gym Operating System</span>
+                        <span class="cmd-item-sub">Log workout splits, sets, reps & rest timer</span>
+                    </div>
+                    <kbd>↵ Jump</kbd>
+                </div>
+                <div class="cmd-item" data-action="act-pr">
+                    <i data-lucide="trophy" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Record New Personal Record (PR)</span>
+                        <span class="cmd-item-sub">Log bench press, squat, deadlift or pull-up PR</span>
+                    </div>
+                    <kbd>↵ Action</kbd>
+                </div>
+                <div class="cmd-item" data-action="act-ex">
+                    <i data-lucide="plus-circle" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Add Custom Exercise to Routine</span>
+                        <span class="cmd-item-sub">Append exercise to active workout split</span>
+                    </div>
+                    <kbd>↵ Action</kbd>
+                </div>
+                <div class="cmd-item" data-action="act-sound">
+                    <i data-lucide="volume-2" class="gold-text"></i>
+                    <div class="cmd-item-info">
+                        <span class="cmd-item-title">Toggle Audio Sound Feedback</span>
+                        <span class="cmd-item-sub">Enable or mute Web Audio synthesized feedback</span>
+                    </div>
+                    <kbd>↵ Action</kbd>
+                </div>
+            </div>
         </div>
     </div>
 

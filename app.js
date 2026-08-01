@@ -3,56 +3,57 @@
    ========================================================================== */
 
 (function () {
-    'use strict';
+    'use strict';    const STORAGE_KEY = 'MOMENTUM_OS_STATE_V3';
 
-    const STORAGE_KEY = 'MOMENTUM_OS_STATE_V2';
+    const TODAY_KEY = new Date().toISOString().slice(0, 10);
 
-    // Default State
+    // Clean Default State (Ready for Real Daily Interaction & Storage)
     const DEFAULT_STATE = {
         activeView: 'dashboard',
         user: {
             name: 'Architect',
-            level: 14,
-            xp: 7450,
-            xpMax: 10000,
-            streak: 28,
-            mission: 'Master AWS Architecture & Build Scalable Distributed Systems',
-            soundEnabled: true
+            level: 1,
+            xp: 0,
+            xpMax: 1000,
+            streak: 0,
+            mission: 'Define your core mission and conquer daily targets.',
+            soundEnabled: true,
+            lastActiveDate: TODAY_KEY
         },
         rings: {
-            workout: { current: 45, max: 60, unit: 'min' },
-            protein: { current: 165, max: 180, unit: 'g' },
-            water: { current: 3.2, max: 4.0, unit: 'L' },
-            sleep: { current: 7.5, max: 8.0, unit: 'hrs' },
-            study: { current: 2.0, max: 2.5, unit: 'hrs' },
-            productivity: { current: 7.5, max: 8.0, unit: 'hrs' }
+            workout: { current: 0, max: 60, unit: 'min' },
+            protein: { current: 0, max: 180, unit: 'g' },
+            water: { current: 0, max: 4.0, unit: 'L' },
+            sleep: { current: 0, max: 8.0, unit: 'hrs' },
+            study: { current: 0, max: 2.5, unit: 'hrs' },
+            productivity: { current: 0, max: 8.0, unit: 'hrs' }
         },
         checklist: [
-            { id: 'task-1', title: 'Wake up at 06:00 AM', tag: 'Routine', completed: true },
-            { id: 'task-2', title: 'Morning Skincare Routine', tag: 'Health', completed: true },
-            { id: 'task-3', title: 'Workout (1 Hr Hypertrophy)', tag: 'Fitness', completed: true },
-            { id: 'task-4', title: 'Hit Protein Goal (180g)', tag: 'Nutrition', completed: true },
-            { id: 'task-5', title: 'AWS Study (Solutions Architect)', tag: 'Learning', completed: true },
-            { id: 'task-6', title: 'Read 20 Pages (Stoicism/Design)', tag: 'Mindset', completed: true },
-            { id: 'task-7', title: 'Journal & Evening Reflection', tag: 'Mindset', completed: true },
-            { id: 'task-8', title: 'Night Skincare Protocol', tag: 'Health', completed: false },
-            { id: 'task-9', title: 'Wind Down & Sleep by 01:00 AM', tag: 'Recovery', completed: false }
+            { id: 'task-1', title: 'Wake up at 06:00 AM & Hydrate', tag: 'Routine', completed: false },
+            { id: 'task-2', title: 'Morning Skincare Protocol', tag: 'Health', completed: false },
+            { id: 'task-3', title: 'Workout (Hypertrophy / Cardio)', tag: 'Fitness', completed: false },
+            { id: 'task-4', title: 'Hit Daily Protein Target (180g)', tag: 'Nutrition', completed: false },
+            { id: 'task-5', title: 'AWS / Deep Work Focused Study', tag: 'Learning', completed: false },
+            { id: 'task-6', title: 'Read 20 Pages (Mindset & Design)', tag: 'Mindset', completed: false },
+            { id: 'task-7', title: 'Journaling & Daily Reflection', tag: 'Reflection', completed: false },
+            { id: 'task-8', title: 'Night Skincare & Wind Down', tag: 'Health', completed: false },
+            { id: 'task-9', title: 'Sleep by 01:00 AM (8 Hrs Target)', tag: 'Recovery', completed: false }
         ],
         stats: {
-            weight: 78.5,
-            calories: 2450,
+            weight: 75.0,
+            calories: 0,
             caloriesMax: 2800,
-            protein: 165,
+            protein: 0,
             proteinMax: 180,
-            water: 3.2,
+            water: 0,
             waterMax: 4.0,
-            sleep: 7.5,
-            mood: '⚡ Flow'
+            sleep: 0,
+            mood: '⚖️ Focused'
         },
         goals: [
-            { id: 'g1', title: 'Pass AWS Certified Solutions Architect', category: 'Certification', progress: 85, dueDate: 'Aug 15, 2026' },
-            { id: 'g2', title: 'Achieve 12% Body Fat & 80kg Lean Mass', category: 'Physical Peak', progress: 70, dueDate: 'Sep 30, 2026' },
-            { id: 'g3', title: 'Launch Momentum OS Production App', category: 'Engineering', progress: 95, dueDate: 'Aug 05, 2026' }
+            { id: 'g1', title: 'Pass AWS Certified Solutions Architect', category: 'Certification', progress: 0, dueDate: 'Target Date' },
+            { id: 'g2', title: 'Achieve Peak Fitness & Body Recomposition', category: 'Physical Peak', progress: 0, dueDate: 'Target Date' },
+            { id: 'g3', title: 'Master Scalable Systems & High Performance Coding', category: 'Engineering', progress: 0, dueDate: 'Target Date' }
         ],
         quotes: [
             { text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit.", author: "— Aristotle" },
@@ -64,15 +65,13 @@
         currentQuoteIndex: 0,
         
         transformation: {
-            body: { weight: 78.5, bodyFat: 13.2, muscleMass: 38.5, waist: 31.5, chest: 43.0, shoulders: 50.5, arms: 16.2, legs: 24.0 },
-            skin: { score: 88, acne: 'Clear', pigmentation: 'Minimal', texture: '92% Smooth', glow: 92 },
-            hair: { density: '94% Thick', growthRate: '+0.5 in/mo', lastWashed: 'Today', wasWashedToday: true },
-            beard: { stage: '15mm Tailored Heavy Stubble', density: '96% Uniform', nextTrimDays: 3 },
+            body: { weight: 75.0, bodyFat: 15.0, muscleMass: 35.0, waist: 32.0, chest: 40.0, shoulders: 48.0, arms: 15.0, legs: 23.0 },
+            skin: { score: 80, acne: 'Clear', pigmentation: 'Minimal', texture: 'Smooth', glow: 85 },
+            hair: { density: 'Thick', growthRate: '+0.5 in/mo', lastWashed: 'Today', wasWashedToday: false },
+            beard: { stage: 'Tailored Stubble', density: 'Uniform', nextTrimDays: 3 },
             wishlist: [
-                { id: 'w1', item: 'Tailored Cashmere Overcoat', price: '$420', category: 'Outerwear', acquired: true },
-                { id: 'w2', item: 'Minimalist Black Leather Watch', price: '$280', category: 'Accessories', acquired: true },
-                { id: 'w3', item: 'Handcrafted Italian Chelsea Boots', price: '$350', category: 'Footwear', acquired: false },
-                { id: 'w4', item: 'Custom Fit Heavyweight Raw Denim', price: '$190', category: 'Pants', acquired: false }
+                { id: 'w1', item: 'Tailored Overcoat', price: '$350', category: 'Outerwear', acquired: false },
+                { id: 'w2', item: 'Minimalist Leather Watch', price: '$250', category: 'Accessories', acquired: false }
             ]
         },
 
@@ -80,11 +79,9 @@
             activeSplit: 'push',
             restTargetSec: 90,
             prs: [
-                { id: 'pr-1', lift: 'Bench Press', weight: 120.0, reps: 5, date: 'Jul 28, 2026' },
-                { id: 'pr-2', lift: 'Barbell Back Squat', weight: 160.0, reps: 5, date: 'Jul 24, 2026' },
-                { id: 'pr-3', lift: 'Conventional Deadlift', weight: 200.0, reps: 3, date: 'Jul 20, 2026' },
-                { id: 'pr-4', lift: 'Weighted Pull-Up', weight: 30.0, reps: 6, date: 'Jul 22, 2026' },
-                { id: 'pr-5', lift: 'Overhead Press', weight: 80.0, reps: 5, date: 'Jul 26, 2026' }
+                { id: 'pr-1', lift: 'Bench Press', weight: 100.0, reps: 5, date: TODAY_KEY },
+                { id: 'pr-2', lift: 'Barbell Back Squat', weight: 120.0, reps: 5, date: TODAY_KEY },
+                { id: 'pr-3', lift: 'Conventional Deadlift', weight: 140.0, reps: 3, date: TODAY_KEY }
             ],
             routines: {
                 push: {
@@ -95,54 +92,31 @@
                             id: 'ex-1',
                             name: 'Barbell Bench Press',
                             targetMuscle: 'Chest / Triceps',
-                            pr: '120.0 kg x 5',
+                            pr: '100.0 kg x 5',
                             sets: [
-                                { setNum: 1, reps: 8, weight: 100.0, completed: true, notes: 'Warmup set clean' },
-                                { setNum: 2, reps: 8, weight: 105.0, completed: true, notes: 'Solid RPE 8' },
-                                { setNum: 3, reps: 6, weight: 110.0, completed: true, notes: 'Explosive drive' },
-                                { setNum: 4, reps: 5, weight: 115.0, completed: false, notes: 'Target PR attempt' }
+                                { setNum: 1, reps: 10, weight: 60.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 8, weight: 70.0, completed: false, notes: '' },
+                                { setNum: 3, reps: 6, weight: 80.0, completed: false, notes: '' }
                             ]
                         },
                         {
                             id: 'ex-2',
                             name: 'Incline Dumbbell Press',
                             targetMuscle: 'Upper Chest',
-                            pr: '42.0 kg x 8',
+                            pr: '32.0 kg x 8',
                             sets: [
-                                { setNum: 1, reps: 10, weight: 36.0, completed: true, notes: 'Deep stretch' },
-                                { setNum: 2, reps: 8, weight: 40.0, completed: false, notes: '' },
-                                { setNum: 3, reps: 8, weight: 40.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 10, weight: 24.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 8, weight: 28.0, completed: false, notes: '' }
                             ]
                         },
                         {
                             id: 'ex-3',
                             name: 'Standing Overhead Press (OHP)',
                             targetMuscle: 'Deltoids',
-                            pr: '80.0 kg x 5',
+                            pr: '60.0 kg x 5',
                             sets: [
-                                { setNum: 1, reps: 8, weight: 65.0, completed: true, notes: 'Strict form' },
-                                { setNum: 2, reps: 6, weight: 72.5, completed: false, notes: '' },
-                                { setNum: 3, reps: 5, weight: 75.0, completed: false, notes: '' }
-                            ]
-                        },
-                        {
-                            id: 'ex-4',
-                            name: 'Cable Lateral Raises',
-                            targetMuscle: 'Lateral Delts',
-                            pr: '18.0 kg x 12',
-                            sets: [
-                                { setNum: 1, reps: 15, weight: 14.0, completed: false, notes: '' },
-                                { setNum: 2, reps: 12, weight: 16.0, completed: false, notes: '' }
-                            ]
-                        },
-                        {
-                            id: 'ex-5',
-                            name: 'Tricep Rope Pushdowns',
-                            targetMuscle: 'Triceps Lateral Head',
-                            pr: '45.0 kg x 12',
-                            sets: [
-                                { setNum: 1, reps: 12, weight: 35.0, completed: false, notes: '' },
-                                { setNum: 2, reps: 12, weight: 40.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 8, weight: 45.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 6, weight: 50.0, completed: false, notes: '' }
                             ]
                         }
                     ]
@@ -155,20 +129,20 @@
                             id: 'ex-p1',
                             name: 'Weighted Pull-Ups',
                             targetMuscle: 'Lats & Upper Back',
-                            pr: '+30.0 kg x 6',
+                            pr: '+15.0 kg x 6',
                             sets: [
-                                { setNum: 1, reps: 8, weight: 15.0, completed: false, notes: '' },
-                                { setNum: 2, reps: 6, weight: 25.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 8, weight: 0.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 6, weight: 10.0, completed: false, notes: '' }
                             ]
                         },
                         {
                             id: 'ex-p2',
                             name: 'Barbell Bent-Over Rows',
                             targetMuscle: 'Rhomboids & Lats',
-                            pr: '110.0 kg x 8',
+                            pr: '80.0 kg x 8',
                             sets: [
-                                { setNum: 1, reps: 10, weight: 85.0, completed: false, notes: '' },
-                                { setNum: 2, reps: 8, weight: 95.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 10, weight: 60.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 8, weight: 70.0, completed: false, notes: '' }
                             ]
                         }
                     ]
@@ -181,10 +155,10 @@
                             id: 'ex-l1',
                             name: 'Barbell Back Squat',
                             targetMuscle: 'Quads & Glutes',
-                            pr: '160.0 kg x 5',
+                            pr: '120.0 kg x 5',
                             sets: [
-                                { setNum: 1, reps: 8, weight: 125.0, completed: false, notes: '' },
-                                { setNum: 2, reps: 6, weight: 140.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 8, weight: 80.0, completed: false, notes: '' },
+                                { setNum: 2, reps: 6, weight: 100.0, completed: false, notes: '' }
                             ]
                         }
                     ]
@@ -197,9 +171,9 @@
                             id: 'ex-u1',
                             name: 'Incline Barbell Press',
                             targetMuscle: 'Upper Chest',
-                            pr: '100.0 kg x 6',
+                            pr: '80.0 kg x 6',
                             sets: [
-                                { setNum: 1, reps: 8, weight: 80.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 8, weight: 60.0, completed: false, notes: '' }
                             ]
                         }
                     ]
@@ -212,34 +186,35 @@
                             id: 'ex-lw1',
                             name: 'Bulgarian Split Squats',
                             targetMuscle: 'Quads & Glutes',
-                            pr: '36.0 kg DBs x 10',
+                            pr: '20.0 kg DBs x 10',
                             sets: [
-                                { setNum: 1, reps: 10, weight: 28.0, completed: false, notes: '' }
+                                { setNum: 1, reps: 10, weight: 16.0, completed: false, notes: '' }
                             ]
                         }
                     ]
                 }
             }
-        }
+        },
+        dailyHistory: {}
     };
 
     const SCHEDULE_BLOCKS = [
         { time: '06:00 AM', name: 'Wake Up & Hydration Protocol', sub: '500ml Water + Morning Sunlight' },
         { time: '06:30 AM', name: 'Morning Skincare & Cold Shower', sub: 'Reset Nervous System' },
-        { time: '07:30 AM', name: 'AWS Deep Work Study', sub: 'Solutions Architect Module 4' },
-        { time: '10:00 AM', name: 'High Protein Meal #1', sub: '60g Protein + Micronutrients' },
+        { time: '07:30 AM', name: 'AWS Deep Work Study', sub: 'Solutions Architect Focus' },
+        { time: '10:00 AM', name: 'High Protein Meal #1', sub: 'Protein + Micronutrients' },
         { time: '11:30 AM', name: 'Engineering & OS Architecture', sub: 'Focused Coding Session' },
-        { time: '04:30 PM', name: 'Hypertrophy Training', sub: 'Push Day: Chest & Shoulders' },
-        { time: '06:30 PM', name: 'Post-Workout Fuel & Meal #2', sub: 'Carbs + 70g Protein' },
-        { time: '08:30 PM', name: 'Reading & Daily Journaling', sub: 'Marcus Aurelius Meditations' },
-        { time: '10:30 PM', name: 'Night Skincare & Wind Down', sub: 'Dim Lights + Magnesium' },
+        { time: '04:30 PM', name: 'Hypertrophy Training Session', sub: 'Active Daily Workout Split' },
+        { time: '06:30 PM', name: 'Post-Workout Fuel & Meal #2', sub: 'Carbs + Protein Recovery' },
+        { time: '08:30 PM', name: 'Reading & Daily Journaling', sub: 'Mindset & Evening Reflection' },
+        { time: '10:30 PM', name: 'Night Skincare & Wind Down', sub: 'Dim Lights + Relaxation' },
         { time: '01:00 AM', name: 'Sleep & Full Recovery', sub: '8.0 Hours Target' }
     ];
 
     let state = loadState();
     let audioCtx = null;
 
-    let workoutTimerSeconds = 2535;
+    let workoutTimerSeconds = 0;
     let workoutTimerInterval = null;
     let isWorkoutTimerRunning = false;
 
@@ -257,25 +232,104 @@
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                return {
+                let loadedState = {
                     ...DEFAULT_STATE,
                     ...parsed,
                     transformation: { ...DEFAULT_STATE.transformation, ...(parsed.transformation || {}) },
-                    gym: { ...DEFAULT_STATE.gym, ...(parsed.gym || {}) }
+                    gym: { ...DEFAULT_STATE.gym, ...(parsed.gym || {}) },
+                    dailyHistory: parsed.dailyHistory || {}
                 };
+                return checkDailyRollover(loadedState);
             }
         } catch (e) {
             console.error('Failed to load state', e);
         }
-        return JSON.parse(JSON.stringify(DEFAULT_STATE));
+        return checkDailyRollover(JSON.parse(JSON.stringify(DEFAULT_STATE)));
     }
 
-    function saveState() {
+    function checkDailyRollover(loadedState) {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const lastDate = loadedState.user.lastActiveDate;
+
+        if (lastDate && lastDate !== todayStr) {
+            // Archive previous day's metrics into dailyHistory
+            if (!loadedState.dailyHistory) loadedState.dailyHistory = {};
+
+            const completedTasks = loadedState.checklist ? loadedState.checklist.filter(t => t.completed).length : 0;
+            loadedState.dailyHistory[lastDate] = {
+                date: lastDate,
+                completedTasks: completedTasks,
+                totalTasks: loadedState.checklist ? loadedState.checklist.length : 0,
+                stats: JSON.parse(JSON.stringify(loadedState.stats)),
+                rings: JSON.parse(JSON.stringify(loadedState.rings)),
+                workoutCompleted: loadedState.gym ? isGymRoutineCompleted(loadedState.gym) : false
+            };
+
+            // Increment streak if previous day was active
+            if (completedTasks > 0) {
+                loadedState.user.streak = (loadedState.user.streak || 0) + 1;
+            }
+
+            // Reset checklist completion for the new day
+            if (loadedState.checklist) {
+                loadedState.checklist.forEach(task => task.completed = false);
+            }
+
+            // Reset vitals ring current progress for the new day
+            if (loadedState.rings) {
+                for (let k in loadedState.rings) loadedState.rings[k].current = 0;
+            }
+
+            // Reset stats inputs for the new day
+            if (loadedState.stats) {
+                loadedState.stats.calories = 0;
+                loadedState.stats.protein = 0;
+                loadedState.stats.water = 0;
+                loadedState.stats.sleep = 0;
+            }
+
+            // Reset gym routine set completion for the new day
+            if (loadedState.gym && loadedState.gym.routines) {
+                for (let splitKey in loadedState.gym.routines) {
+                    loadedState.gym.routines[splitKey].exercises.forEach(ex => {
+                        ex.sets.forEach(s => s.completed = false);
+                    });
+                }
+            }
+
+            loadedState.user.lastActiveDate = todayStr;
+            saveStateDirect(loadedState);
+        } else if (!lastDate) {
+            loadedState.user.lastActiveDate = todayStr;
+        }
+
+        return loadedState;
+    }
+
+    function isGymRoutineCompleted(gymObj) {
+        const split = gymObj.activeSplit || 'push';
+        const routine = gymObj.routines ? gymObj.routines[split] : null;
+        if (!routine || !routine.exercises) return false;
+        let total = 0, done = 0;
+        routine.exercises.forEach(ex => {
+            ex.sets.forEach(s => {
+                total++;
+                if (s.completed) done++;
+            });
+        });
+        return total > 0 && done === total;
+    }
+
+    function saveStateDirect(sObj) {
         try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(sObj));
         } catch (e) {
             console.error('Failed to save state', e);
         }
+    }
+
+    function saveState() {
+        saveStateDirect(state);
     }
 
     function initAudio() {
@@ -345,6 +399,7 @@
         setupTimers();
         setupEventListeners();
         setupBeforeAfterSlider();
+        setupCommandPalette();
         renderAll();
         initCharts();
     });
@@ -706,7 +761,17 @@
         }
     }
 
+    function getDayOfSplit() {
+        const splits = ['legs', 'push', 'pull', 'legs', 'upper', 'push', 'pull']; // Sun=0, Mon=1, Tue=2, Wed=3, Thu=4, Fri=5, Sat=6
+        const dayIdx = new Date().getDay();
+        return splits[dayIdx] || 'push';
+    }
+
     function renderGymOS() {
+        if (!state.gym.activeSplit) {
+            state.gym.activeSplit = getDayOfSplit();
+        }
+
         const activeSplit = state.gym.activeSplit || 'push';
         const routine = state.gym.routines[activeSplit];
 
@@ -715,64 +780,219 @@
             document.getElementById('gym-workout-title').innerHTML = `${routine.title.split('—')[0]} — <span class="gold-gradient-text">${routine.title.split('—')[1] || ''}</span>`;
             document.getElementById('target-ex-count').textContent = `${routine.exercises.length} Exercises`;
 
+            // Calculate Progress Metrics
+            let totalSets = 0;
+            let completedSets = 0;
+            let totalVolume = 0;
+
+            routine.exercises.forEach(ex => {
+                ex.sets.forEach(s => {
+                    totalSets++;
+                    if (s.completed) {
+                        completedSets++;
+                        totalVolume += (s.weight || 0) * (s.reps || 0);
+                    }
+                });
+            });
+
+            const pct = totalSets > 0 ? Math.round((completedSets / totalSets) * 100) : 0;
+
+            // Update UI Counters
+            const setsProgressEl = document.getElementById('gym-sets-progress');
+            if (setsProgressEl) setsProgressEl.textContent = `${completedSets} / ${totalSets} Sets`;
+
+            const volumeEl = document.getElementById('gym-total-volume');
+            if (volumeEl) volumeEl.textContent = `${totalVolume.toLocaleString()} kg`;
+
+            const streakEl = document.getElementById('gym-streak-val');
+            if (streakEl) streakEl.textContent = `${state.user.streak || 14} Days 🔥`;
+
+            const pctValEl = document.getElementById('workout-pct-val');
+            if (pctValEl) pctValEl.textContent = `${pct}%`;
+
+            // Update SVG Progress Ring (circumference = 440)
+            const ringFill = document.getElementById('workout-progress-ring-fill');
+            if (ringFill) {
+                const offset = 440 - (pct / 100) * 440;
+                ringFill.style.strokeDashoffset = offset;
+            }
+
+            // Hero Card Completion State
+            const heroCard = document.getElementById('today-workout-hero-card');
+            const statusEl = document.getElementById('workout-completion-status');
+            const bannerBadge = document.getElementById('gym-status-badge');
+
+            if (pct === 100 && totalSets > 0) {
+                if (heroCard) heroCard.classList.add('hero-card-completed');
+                if (statusEl) statusEl.innerHTML = '<i data-lucide="check-circle-2" class="green-text"></i> ✓ WORKOUT COMPLETED!';
+                if (bannerBadge) {
+                    bannerBadge.textContent = '✓ Workout Completed';
+                    bannerBadge.classList.add('workout-completed-badge');
+                }
+            } else {
+                if (heroCard) heroCard.classList.remove('hero-card-completed');
+                if (statusEl) statusEl.innerHTML = '<i data-lucide="loader" class="gold-text"></i> In Progress';
+                if (bannerBadge) {
+                    bannerBadge.textContent = '⚡ Workout Active';
+                    bannerBadge.classList.remove('workout-completed-badge');
+                }
+            }
+
+            // Render Exercises
             const container = document.getElementById('exercises-container');
             if (container) {
-                container.innerHTML = routine.exercises.map(ex => `
-                    <div class="exercise-card glass-card" data-ex-id="${ex.id}">
-                        <div class="ex-card-header">
-                            <div class="ex-title-group">
-                                <h4>${ex.name}</h4>
-                                <span class="task-tag">${ex.targetMuscle}</span>
+                container.innerHTML = routine.exercises.map(ex => {
+                    const allDone = ex.sets.length > 0 && ex.sets.every(s => s.completed);
+                    return `
+                        <div class="exercise-card glass-card ${allDone ? 'completed-ex' : ''}" data-ex-id="${ex.id}">
+                            <div class="ex-card-header">
+                                <div class="ex-title-group">
+                                    <h4>${ex.name}</h4>
+                                    <span class="task-tag">${ex.targetMuscle}</span>
+                                    ${allDone ? '<span class="completion-pill" style="background:rgba(52,211,153,0.15); color:#34D399; font-weight:700;"><i data-lucide="check"></i> Exercise Complete</span>' : ''}
+                                </div>
+                                <span class="pr-badge-sm"><i data-lucide="award"></i> PR: ${ex.pr}</span>
                             </div>
-                            <span class="pr-badge-sm"><i data-lucide="award"></i> PR: ${ex.pr}</span>
-                        </div>
-                        <table class="sets-table">
-                            <thead>
-                                <tr>
-                                    <th>SET</th>
-                                    <th>REPS</th>
-                                    <th>WEIGHT (KG)</th>
-                                    <th>COMPLETED</th>
-                                    <th>NOTES</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${ex.sets.map(s => `
-                                    <tr class="set-row ${s.completed ? 'completed-set' : ''}" data-set-num="${s.setNum}">
-                                        <td><span class="set-num-badge">SET ${s.setNum}</span></td>
-                                        <td><input type="number" class="set-input input-reps" value="${s.reps}"></td>
-                                        <td><input type="number" step="0.5" class="set-input input-weight" value="${s.weight}"></td>
-                                        <td>
-                                            <div class="custom-checkbox ${s.completed ? 'checked' : ''}" data-action="toggle-set">
-                                                <i data-lucide="check"></i>
-                                            </div>
-                                        </td>
-                                        <td><input type="text" class="set-notes-input" placeholder="Notes..." value="${s.notes || ''}"></td>
+                            <table class="sets-table">
+                                <thead>
+                                    <tr>
+                                        <th>SET</th>
+                                        <th>REPS</th>
+                                        <th>WEIGHT (KG)</th>
+                                        <th>COMPLETED</th>
+                                        <th>NOTES</th>
                                     </tr>
-                                `).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                `).join('');
+                                </thead>
+                                <tbody>
+                                    ${ex.sets.map(s => `
+                                        <tr class="set-row ${s.completed ? 'completed-set' : ''}" data-set-num="${s.setNum}">
+                                            <td><span class="set-num-badge">SET ${s.setNum}</span></td>
+                                            <td><input type="number" class="set-input input-reps" value="${s.reps}"></td>
+                                            <td><input type="number" step="0.5" class="set-input input-weight" value="${s.weight}"></td>
+                                            <td>
+                                                <div class="custom-checkbox ${s.completed ? 'checked' : ''}" data-action="toggle-set">
+                                                    <i data-lucide="check"></i>
+                                                </div>
+                                            </td>
+                                            <td><input type="text" class="set-notes-input" placeholder="Notes..." value="${s.notes || ''}"></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                            <div style="margin-top:10px; display:flex; justify-content:flex-end;">
+                                <button class="add-set-row-btn" data-action="add-set" data-ex-id="${ex.id}">
+                                    <i data-lucide="plus"></i> Add Set
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
             }
         }
 
+        // Render Personal Records (PRs)
         const prsContainer = document.getElementById('prs-container');
         if (prsContainer && state.gym.prs) {
-            prsContainer.innerHTML = state.gym.prs.map(pr => `
-                <div class="pr-card glass-card">
-                    <div class="pr-icon-top">
-                        <div class="pr-trophy-box"><i data-lucide="trophy"></i></div>
-                        <span class="pr-reps-sub">${pr.reps} Reps</span>
+            prsContainer.innerHTML = state.gym.prs.map(pr => {
+                const est1RM = Math.round(pr.weight * (1 + (pr.reps / 30)));
+                return `
+                    <div class="pr-card glass-card">
+                        <div class="pr-icon-top">
+                            <div class="pr-trophy-box"><i data-lucide="trophy"></i></div>
+                            <span class="pr-reps-sub">${pr.reps} Reps</span>
+                        </div>
+                        <span class="pr-lift-name">${pr.lift}</span>
+                        <span class="pr-weight-val">${pr.weight} kg</span>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:4px;">
+                            <span style="font-size:0.72rem; color:var(--text-muted);">${pr.date}</span>
+                            <span style="font-size:0.72rem; color:var(--accent-gold); font-weight:700;">Est. 1RM: ${est1RM}kg</span>
+                        </div>
                     </div>
-                    <span class="pr-lift-name">${pr.lift}</span>
-                    <span class="pr-weight-val">${pr.weight} kg</span>
-                    <span style="font-size:0.72rem; color:var(--text-muted);">${pr.date}</span>
-                </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
+        // Render Gym Analytics Bench 1RM
+        const benchPr = state.gym.prs ? state.gym.prs.find(p => p.lift.toLowerCase().includes('bench')) : null;
+        const bench1RMEl = document.getElementById('ana-bench-1rm');
+        if (bench1RMEl && benchPr) {
+            const est1RM = Math.round(benchPr.weight * (1 + (benchPr.reps / 30)));
+            bench1RMEl.textContent = `${est1RM}.0`;
+        }
+
+        // Render Full Calendar History Grid (31 Days)
+        renderCalendarGrid();
+
         if (window.lucide) window.lucide.createIcons();
+    }
+
+    // Render Month Interactive Workout Calendar based on Real Daily Interaction
+    function renderCalendarGrid() {
+        const calContainer = document.getElementById('full-calendar-grid');
+        if (!calContainer) return;
+
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        const todayDate = now.getDate();
+
+        const splits = ['Push A', 'Pull A', 'Rest', 'Legs A', 'Push B', 'Pull B', 'Rest'];
+
+        let html = '';
+        for (let day = 1; day <= daysInMonth; day++) {
+            const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const historyEntry = state.dailyHistory ? state.dailyHistory[dateStr] : null;
+
+            let statusClass = 'red';
+            let splitName = splits[(day - 1) % 7];
+
+            if (day === todayDate) {
+                const completedSets = state.gym ? countCompletedGymSets(state.gym) : 0;
+                const completedTasks = state.checklist ? state.checklist.filter(t => t.completed).length : 0;
+                if (completedSets > 0 || completedTasks > 0) {
+                    statusClass = (state.gym && isGymRoutineCompleted(state.gym)) || completedTasks >= 7 ? 'green' : 'yellow';
+                } else {
+                    statusClass = 'yellow';
+                }
+            } else if (historyEntry) {
+                if (historyEntry.workoutCompleted || (historyEntry.completedTasks && historyEntry.completedTasks >= 7)) {
+                    statusClass = 'green';
+                } else if (historyEntry.completedTasks > 0) {
+                    statusClass = 'yellow';
+                }
+            } else if (day < todayDate) {
+                statusClass = 'red';
+            } else {
+                statusClass = 'upcoming';
+            }
+
+            const isToday = day === todayDate;
+
+            html += `
+                <div class="cal-cell-day ${isToday ? 'active-day' : ''}" data-date-str="${dateStr}" data-day-num="${day}" data-split="${splitName}" data-status="${statusClass}">
+                    <div style="display:flex; justify-content:space-between; width:100%;">
+                        <span class="cal-cell-num">${day}${isToday ? ' (Today)' : ''}</span>
+                        <span class="cell-dot ${statusClass === 'upcoming' ? '' : statusClass}"></span>
+                    </div>
+                    <span class="cal-cell-tag" style="color: ${statusClass === 'green' ? '#34D399' : (statusClass === 'yellow' ? '#F59E0B' : (statusClass === 'upcoming' ? '#62626B' : '#EF4444'))}">
+                        ${splitName}
+                    </span>
+                </div>
+            `;
+        }
+        calContainer.innerHTML = html;
+    }
+
+    function countCompletedGymSets(gymObj) {
+        const split = gymObj.activeSplit || 'push';
+        const routine = gymObj.routines ? gymObj.routines[split] : null;
+        if (!routine || !routine.exercises) return 0;
+        let count = 0;
+        routine.exercises.forEach(ex => {
+            ex.sets.forEach(s => { if (s.completed) count++; });
+        });
+        return count;
     }
 
     function setupBeforeAfterSlider() {
@@ -835,6 +1055,47 @@
                     renderAll();
                     updateChartsData();
                 }
+            });
+        }
+
+        // Export Data Backup
+        const exportBtn = document.getElementById('export-data-btn');
+        if (exportBtn) {
+            exportBtn.addEventListener('click', () => {
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+                const downloadAnchor = document.createElement('a');
+                downloadAnchor.setAttribute("href", dataStr);
+                downloadAnchor.setAttribute("download", `momentum_os_backup_${new Date().toISOString().slice(0, 10)}.json`);
+                document.body.appendChild(downloadAnchor);
+                downloadAnchor.click();
+                downloadAnchor.remove();
+                playSound('complete');
+            });
+        }
+
+        // Import Data Backup
+        const importBtn = document.getElementById('import-data-btn');
+        const importFileInput = document.getElementById('import-file-input');
+        if (importBtn && importFileInput) {
+            importBtn.addEventListener('click', () => importFileInput.click());
+            importFileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    try {
+                        const importedState = JSON.parse(event.target.result);
+                        state = { ...DEFAULT_STATE, ...importedState };
+                        saveState();
+                        renderAll();
+                        updateChartsData();
+                        playSound('complete');
+                        alert('✓ Momentum OS data backup successfully imported!');
+                    } catch (err) {
+                        alert('Failed to parse backup JSON file.');
+                    }
+                };
+                reader.readAsText(file);
             });
         }
 
@@ -973,35 +1234,68 @@
             });
         }
 
-        // Gym Set Completion & Input Handler
+        // Gym Set Completion, Add Set & Input Handler
         const exContainer = document.getElementById('exercises-container');
         if (exContainer) {
             exContainer.addEventListener('click', (e) => {
-                const toggleBox = e.target.closest('[data-action="toggle-set"]');
-                if (!toggleBox) return;
+                // Add Set Row Button
+                const addSetBtn = e.target.closest('[data-action="add-set"]');
+                if (addSetBtn) {
+                    const exId = addSetBtn.dataset.exId;
+                    const activeSplit = state.gym.activeSplit || 'push';
+                    const routine = state.gym.routines[activeSplit];
+                    const exercise = routine ? routine.exercises.find(x => x.id === exId) : null;
 
-                const exCard = e.target.closest('.exercise-card');
-                const setRow = e.target.closest('.set-row');
-                if (!exCard || !setRow) return;
+                    if (exercise) {
+                        const nextNum = exercise.sets.length + 1;
+                        const lastSet = exercise.sets[exercise.sets.length - 1];
+                        const lastWeight = lastSet ? lastSet.weight : 50;
+                        const lastReps = lastSet ? lastSet.reps : 10;
 
-                const exId = exCard.dataset.exId;
-                const setNum = parseInt(setRow.dataset.setNum);
+                        exercise.sets.push({
+                            setNum: nextNum,
+                            reps: lastReps,
+                            weight: lastWeight,
+                            completed: false,
+                            notes: ''
+                        });
 
-                const activeSplit = state.gym.activeSplit || 'push';
-                const routine = state.gym.routines[activeSplit];
-                const exercise = routine ? routine.exercises.find(x => x.id === exId) : null;
-                const setObj = exercise ? exercise.sets.find(s => s.setNum === setNum) : null;
-
-                if (setObj) {
-                    setObj.completed = !setObj.completed;
-                    if (setObj.completed) {
+                        saveState();
+                        renderGymOS();
                         playSound('check');
-                        addXP(75);
-                        triggerRestTimer(state.gym.restTargetSec || 90);
                     }
-                    saveState();
-                    renderGymOS();
-                    renderHero();
+                    return;
+                }
+
+                // Toggle Set Completion Checkbox
+                const toggleBox = e.target.closest('[data-action="toggle-set"]');
+                if (toggleBox) {
+                    const exCard = e.target.closest('.exercise-card');
+                    const setRow = e.target.closest('.set-row');
+                    if (!exCard || !setRow) return;
+
+                    const exId = exCard.dataset.exId;
+                    const setNum = parseInt(setRow.dataset.setNum);
+
+                    const activeSplit = state.gym.activeSplit || 'push';
+                    const routine = state.gym.routines[activeSplit];
+                    const exercise = routine ? routine.exercises.find(x => x.id === exId) : null;
+                    const setObj = exercise ? exercise.sets.find(s => s.setNum === setNum) : null;
+
+                    if (setObj && exercise) {
+                        setObj.completed = !setObj.completed;
+                        if (setObj.completed) {
+                            playSound('check');
+                            addXP(75);
+                            triggerRestTimer(state.gym.restTargetSec || 90);
+
+                            // Check PR Condition
+                            checkNewPRCondition(exercise.name, setObj.weight, setObj.reps);
+                        }
+                        saveState();
+                        renderGymOS();
+                        renderHero();
+                    }
                 }
             });
 
@@ -1019,7 +1313,7 @@
                 const exercise = routine ? routine.exercises.find(x => x.id === exId) : null;
                 const setObj = exercise ? exercise.sets.find(s => s.setNum === setNum) : null;
 
-                if (setObj) {
+                if (setObj && exercise) {
                     if (input.classList.contains('input-reps')) {
                         setObj.reps = parseInt(input.value) || setObj.reps;
                     } else if (input.classList.contains('input-weight')) {
@@ -1028,9 +1322,94 @@
                         setObj.notes = input.value;
                     }
                     saveState();
+                    renderGymOS();
                 }
             });
         }
+
+        // Quick Action Bar Buttons
+        const startWorkoutBtn = document.getElementById('btn-start-workout');
+        if (startWorkoutBtn) {
+            startWorkoutBtn.addEventListener('click', () => {
+                playSound('complete');
+                const timerBtn = document.getElementById('btn-toggle-workout-timer');
+                if (timerBtn) timerBtn.click();
+            });
+        }
+
+        const quickAddExBtn = document.getElementById('btn-quick-add-ex');
+        if (quickAddExBtn) {
+            quickAddExBtn.addEventListener('click', () => {
+                const modal = document.getElementById('add-ex-modal');
+                if (modal) modal.classList.add('active');
+            });
+        }
+
+        const quickHistBtn = document.getElementById('btn-quick-history');
+        if (quickHistBtn) {
+            quickHistBtn.addEventListener('click', () => {
+                const sec = document.getElementById('history-section');
+                if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        const quickCompBtn = document.getElementById('btn-quick-compare');
+        if (quickCompBtn) {
+            quickCompBtn.addEventListener('click', () => {
+                const sec = document.getElementById('charts-section');
+                if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
+
+        // Rest Timer Controls
+        const startRestBtn = document.getElementById('btn-start-rest-timer');
+        if (startRestBtn) {
+            startRestBtn.addEventListener('click', () => {
+                triggerRestTimer(restTimerSeconds || state.gym.restTargetSec || 90);
+            });
+        }
+
+        const pauseRestBtn = document.getElementById('btn-pause-rest-timer');
+        if (pauseRestBtn) {
+            pauseRestBtn.addEventListener('click', () => {
+                clearInterval(restTimerInterval);
+                isRestTimerRunning = false;
+            });
+        }
+
+        const resetRestBtn = document.getElementById('btn-reset-rest-timer');
+        if (resetRestBtn) {
+            resetRestBtn.addEventListener('click', () => {
+                clearInterval(restTimerInterval);
+                isRestTimerRunning = false;
+                restTimerSeconds = state.gym.restTargetSec || 90;
+                const display = document.getElementById('rest-timer-display');
+                if (display) display.textContent = `${restTimerSeconds}s`;
+            });
+        }
+
+        // Calendar Day Click Popup
+        document.addEventListener('click', (e) => {
+            const dayCell = e.target.closest('.cal-cell-day');
+            if (dayCell) {
+                const dayNum = dayCell.dataset.dayNum;
+                const split = dayCell.dataset.split;
+                const status = dayCell.dataset.status;
+                const statusText = status === 'green' ? '✓ Completed (18 Sets)' : (status === 'yellow' ? '⚡ Partial Workout (8 Sets)' : '🌙 Rest & Recovery Day');
+                alert(`Workout Log for Jul/Aug ${dayNum}, 2026\nStatus: ${statusText}\nSplit: ${split}\nEst. Volume: ${status === 'green' ? '14,250 kg' : '6,100 kg'}`);
+            }
+        });
+
+        // Timeframe Period Buttons
+        document.addEventListener('click', (e) => {
+            const periodBtn = e.target.closest('.btn-period');
+            if (periodBtn) {
+                document.querySelectorAll('.btn-period').forEach(b => b.classList.remove('active'));
+                periodBtn.classList.add('active');
+                const activeTab = document.querySelector('.pr-chart-tabs .chart-tab.active');
+                if (activeTab) updateStrengthChart(activeTab.dataset.prlift);
+            }
+        });
 
         // Strength Chart Tabs
         document.addEventListener('click', (e) => {
@@ -1350,6 +1729,144 @@
         strengthChartInstance.update();
     }
 
+    function checkNewPRCondition(liftName, weight, reps) {
+        if (!state.gym || !state.gym.prs) return;
+
+        const liftKey = liftName.toLowerCase().split(' ')[0];
+        const existing = state.gym.prs.find(p => p.lift.toLowerCase().includes(liftKey));
+
+        if (existing && weight > existing.weight) {
+            existing.weight = weight;
+            existing.reps = reps;
+            existing.date = 'Today';
+            saveState();
+            showPRToast(existing.lift, weight, reps);
+        } else if (!existing && weight > 0) {
+            state.gym.prs.push({ id: 'pr-' + Date.now(), lift: liftName, weight: weight, reps: reps, date: 'Today' });
+            saveState();
+            showPRToast(liftName, weight, reps);
+        }
+    }
+
+    function showPRToast(lift, weight, reps) {
+        playSound('complete');
+        if (window.confetti) window.confetti({ particleCount: 150, spread: 90, origin: { y: 0.5 } });
+
+        const toast = document.createElement('div');
+        toast.className = 'pr-toast-banner';
+        toast.innerHTML = `
+            <div class="pr-trophy-box" style="font-size:2rem;"><i data-lucide="trophy" class="gold-text"></i></div>
+            <div>
+                <div class="pr-toast-title">🏆 NEW PERSONAL RECORD!</div>
+                <div class="pr-toast-sub">${lift}: <strong>${weight} kg</strong> x ${reps} Reps!</div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        if (window.lucide) window.lucide.createIcons();
+
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => toast.remove(), 500);
+        }, 4000);
+    }
+
+    function setupCommandPalette() {
+        const openBtn = document.getElementById('open-cmd-palette-btn');
+        const modal = document.getElementById('cmd-palette-modal');
+        const input = document.getElementById('cmd-search-input');
+        const list = document.getElementById('cmd-results-list');
+
+        if (!modal || !input) return;
+
+        function openPalette() {
+            modal.classList.add('active');
+            input.value = '';
+            filterCommands('');
+            setTimeout(() => input.focus(), 50);
+        }
+
+        function closePalette() {
+            modal.classList.remove('active');
+        }
+
+        if (openBtn) {
+            openBtn.addEventListener('click', openPalette);
+        }
+
+        // Global Cmd+K / Ctrl+K listener
+        window.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+                e.preventDefault();
+                if (modal.classList.contains('active')) closePalette();
+                else openPalette();
+            } else if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closePalette();
+            }
+        });
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closePalette();
+        });
+
+        // Filter items
+        input.addEventListener('input', (e) => {
+            filterCommands(e.target.value.toLowerCase().trim());
+        });
+
+        function filterCommands(query) {
+            const items = list.querySelectorAll('.cmd-item');
+            items.forEach(item => {
+                const title = item.querySelector('.cmd-item-title').textContent.toLowerCase();
+                const sub = item.querySelector('.cmd-item-sub').textContent.toLowerCase();
+                if (!query || title.includes(query) || sub.includes(query)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Command Item Click Handlers
+        if (list) {
+            list.addEventListener('click', (e) => {
+                const item = e.target.closest('.cmd-item');
+                if (!item) return;
+                const action = item.dataset.action;
+
+                closePalette();
+
+                if (action === 'nav-dash') {
+                    const tab = document.querySelector('.nav-tab[data-view="dashboard"]');
+                    if (tab) tab.click();
+                } else if (action === 'nav-glow') {
+                    const tab = document.querySelector('.nav-tab[data-view="transformation"]');
+                    if (tab) tab.click();
+                } else if (action === 'nav-gym') {
+                    const tab = document.querySelector('.nav-tab[data-view="gym"]');
+                    if (tab) tab.click();
+                } else if (action === 'act-pr') {
+                    const tab = document.querySelector('.nav-tab[data-view="gym"]');
+                    if (tab) tab.click();
+                    setTimeout(() => {
+                        const prModal = document.getElementById('pr-modal');
+                        if (prModal) prModal.classList.add('active');
+                    }, 100);
+                } else if (action === 'act-ex') {
+                    const tab = document.querySelector('.nav-tab[data-view="gym"]');
+                    if (tab) tab.click();
+                    setTimeout(() => {
+                        const exModal = document.getElementById('add-ex-modal');
+                        if (exModal) exModal.classList.add('active');
+                    }, 100);
+                } else if (action === 'act-sound') {
+                    const soundBtn = document.getElementById('sound-toggle-btn');
+                    if (soundBtn) soundBtn.click();
+                }
+            });
+        }
+    }
+
     function updateChartsData() {
         if (lifeChartInstance) lifeChartInstance.update();
         if (vitalsChartInstance) vitalsChartInstance.update();
@@ -1358,3 +1875,5 @@
     }
 
 })();
+
+
