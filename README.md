@@ -35,8 +35,8 @@
 
 1. Clone or download the repository:
    ```bash
-   git clone https://github.com/USERNAME/momentum-os.git
-   cd momentum-os
+   git clone https://github.com/mirsshaad/Momentum-OS-Dashboard.git
+   cd Momentum-OS-Dashboard
    ```
 
 2. Serve locally with Python (or any web server):
